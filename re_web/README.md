@@ -127,3 +127,24 @@ Nhóm sản phẩm bất động sản (cây phân cấp). PK: `RPG_ID`
 | CREATED_AT | TIMESTAMP(6) | không | CURRENT_TIMESTAMP | Thời điểm tạo bản ghi |
 | MODIFIED_BY | VARCHAR2(200) | không | — | Người sửa gần nhất |
 | MODIFIED_AT | TIMESTAMP(6) | không | — | Thời điểm sửa gần nhất |
+
+```
+Nhóm sản phẩm BĐS (RE_PRODUCT_GROUPS)
+│
+├── [37] KCN — Khu công nghiệp (INDUSTRIAL, class I)
+│   ├── [50] LDT — Lô đất công nghiệp
+│   ├── [51] NX  — Nhà xưởng
+│   └── [52] KB  — Kho bãi
+│
+├── [38] CT — Cao tầng (RESIDENTIAL, class H)
+│   ├── [53] CH — Căn hộ
+│   └── [56] PH — Penthouse
+│
+└── [39] TT — Thấp tầng (RESIDENTIAL, class L)
+    ├── [57] BT — Biệt thự
+    ├── [58] NP — Nhà phố
+    ├── [59] SH — Shophouse
+    └── [60] DN — Đất nền
+```
+
+3 nhóm gốc (`PARENT_RPG_ID = null`, `IS_PARENT = 'Y'`) ở `WBS_LEVEL` 1; 9 nhóm con (`IS_PARENT = 'N'`) ở `WBS_LEVEL` 2. Không có nhóm nào ở cấp 3.

@@ -1,0 +1,434 @@
+{
+  "dataSource": {
+    "type": "none"
+  },
+  "layout": {
+    "orientation": "horizontal",
+    "panes": [
+      {
+        "collapsible": true,
+        "id": "filters_pane",
+        "regionIds": [
+          "filter_region"
+        ],
+        "resizable": true,
+        "size": "260px",
+        "visible": true
+      },
+      {
+        "id": "center",
+        "regionIds": [
+          "kpi_region",
+          "list_region"
+        ],
+        "size": "1fr"
+      }
+    ],
+    "type": "splitter"
+  },
+  "pageTranslations": {
+    "en": {
+      "fields": {
+        "f_auth": "Auth Type",
+        "f_keyword": "Search",
+        "f_reg_status": "Registration",
+        "f_status": "Status"
+      },
+      "regions": {
+        "filter_region": "Filters",
+        "kpi_region": "Statistics",
+        "list_region": "User List"
+      }
+    },
+    "vi": {
+      "fields": {
+        "f_auth": "Loại xác thực",
+        "f_keyword": "Tìm kiếm",
+        "f_reg_status": "Đăng ký",
+        "f_status": "Trạng thái"
+      },
+      "regions": {
+        "filter_region": "Bộ lọc",
+        "kpi_region": "Thống kê",
+        "list_region": "Danh sách người dùng"
+      }
+    }
+  },
+  "pageType": "list",
+  "regions": [
+    {
+      "fields": [
+        {
+          "label": "Search",
+          "name": "f_keyword",
+          "placeholder": "Name, Email, Username...",
+          "type": "text"
+        },
+        {
+          "defaultValue": "",
+          "label": "Status",
+          "layout": {
+            "direction": "horizontal"
+          },
+          "lov": {
+            "manual": [
+              {
+                "label": "All",
+                "value": ""
+              },
+              {
+                "label": "Active",
+                "value": "Y"
+              },
+              {
+                "label": "Locked",
+                "value": "N"
+              }
+            ]
+          },
+          "name": "f_status",
+          "type": "radio"
+        },
+        {
+          "label": "Auth Type",
+          "lov": {
+            "manual": [
+              {
+                "color": "info",
+                "label": "Manual",
+                "value": "MANUAL"
+              },
+              {
+                "color": "warning",
+                "label": "SSO",
+                "value": "SSO_GOOGLE"
+              }
+            ]
+          },
+          "name": "f_auth",
+          "showClearButton": true,
+          "type": "select"
+        },
+        {
+          "label": "Registration",
+          "lov": {
+            "manual": [
+              {
+                "color": "warning",
+                "label": "Pending",
+                "value": "PENDING"
+              },
+              {
+                "color": "success",
+                "label": "Approved",
+                "value": "APPROVED"
+              },
+              {
+                "color": "critical",
+                "label": "Rejected",
+                "value": "REJECTED"
+              }
+            ]
+          },
+          "name": "f_reg_status",
+          "showClearButton": true,
+          "type": "select"
+        }
+      ],
+      "icon": "filter",
+      "id": "filter_region",
+      "title": "Filters",
+      "type": "card"
+    },
+    {
+      "fields": [
+        {
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1
+          },
+          "metadata": {
+            "color": "blue",
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_keyword",
+                  "sourceField": "f_keyword"
+                },
+                {
+                  "name": "p_status",
+                  "sourceField": "f_status"
+                },
+                {
+                  "name": "p_auth",
+                  "sourceField": "f_auth"
+                },
+                {
+                  "name": "p_reg",
+                  "sourceField": "f_reg_status"
+                }
+              ],
+              "query": "SELECT COUNT(*) AS VALUE FROM USERS WHERE (:p_keyword IS NULL OR LOWER(FULL_NAME || ' ' || USERNAME || ' ' || EMAIL) LIKE LOWER('%'||:p_keyword||'%')) AND (:p_status IS NULL OR STATUS = :p_status) AND (:p_auth IS NULL OR AUTH_TYPE = :p_auth) AND (:p_reg IS NULL OR REGISTRATION_STATUS = :p_reg)",
+              "type": "sql"
+            },
+            "icon": "users",
+            "title": "Total Users"
+          },
+          "name": "w_total",
+          "type": "widget"
+        },
+        {
+          "layout": {
+            "col": 4,
+            "colSpan": 3,
+            "row": 1
+          },
+          "metadata": {
+            "color": "green",
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_keyword",
+                  "sourceField": "f_keyword"
+                },
+                {
+                  "name": "p_auth",
+                  "sourceField": "f_auth"
+                },
+                {
+                  "name": "p_reg",
+                  "sourceField": "f_reg_status"
+                }
+              ],
+              "query": "SELECT COUNT(*) AS VALUE FROM USERS WHERE STATUS = 'Y' AND (:p_keyword IS NULL OR LOWER(FULL_NAME || ' ' || USERNAME || ' ' || EMAIL) LIKE LOWER('%'||:p_keyword||'%')) AND (:p_auth IS NULL OR AUTH_TYPE = :p_auth) AND (:p_reg IS NULL OR REGISTRATION_STATUS = :p_reg)",
+              "type": "sql"
+            },
+            "icon": "user-check",
+            "title": "Active"
+          },
+          "name": "w_active",
+          "type": "widget"
+        },
+        {
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1
+          },
+          "metadata": {
+            "color": "red",
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_keyword",
+                  "sourceField": "f_keyword"
+                },
+                {
+                  "name": "p_auth",
+                  "sourceField": "f_auth"
+                },
+                {
+                  "name": "p_reg",
+                  "sourceField": "f_reg_status"
+                }
+              ],
+              "query": "SELECT COUNT(*) AS VALUE FROM USERS WHERE STATUS = 'N' AND (:p_keyword IS NULL OR LOWER(FULL_NAME || ' ' || USERNAME || ' ' || EMAIL) LIKE LOWER('%'||:p_keyword||'%')) AND (:p_auth IS NULL OR AUTH_TYPE = :p_auth) AND (:p_reg IS NULL OR REGISTRATION_STATUS = :p_reg)",
+              "type": "sql"
+            },
+            "icon": "lock",
+            "title": "Locked"
+          },
+          "name": "w_locked",
+          "type": "widget"
+        },
+        {
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1
+          },
+          "metadata": {
+            "color": "orange",
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_keyword",
+                  "sourceField": "f_keyword"
+                },
+                {
+                  "name": "p_status",
+                  "sourceField": "f_status"
+                },
+                {
+                  "name": "p_auth",
+                  "sourceField": "f_auth"
+                }
+              ],
+              "query": "SELECT COUNT(*) AS VALUE FROM USERS WHERE REGISTRATION_STATUS = 'PENDING' AND (:p_keyword IS NULL OR LOWER(FULL_NAME || ' ' || USERNAME || ' ' || EMAIL) LIKE LOWER('%'||:p_keyword||'%')) AND (:p_status IS NULL OR STATUS = :p_status) AND (:p_auth IS NULL OR AUTH_TYPE = :p_auth)",
+              "type": "sql"
+            },
+            "icon": "clock",
+            "title": "Pending"
+          },
+          "name": "w_pending",
+          "type": "widget"
+        }
+      ],
+      "id": "kpi_region",
+      "type": "plain"
+    },
+    {
+      "fields": [
+        {
+          "layout": {
+            "colSpan": 12
+          },
+          "metadata": {
+            "columns": [
+              {
+                "editable": false,
+                "filterable": false,
+                "key": "AVATAR",
+                "label": "",
+                "minWidth": 62,
+                "sortable": false,
+                "sourceFields": [
+                  "FULL_NAME",
+                  "USERNAME",
+                  "AVATAR_URL"
+                ],
+                "type": "avatar",
+                "width": 62
+              },
+              {
+                "key": "FULL_NAME",
+                "label": "Full Name",
+                "minWidth": 180
+              },
+              {
+                "key": "USERNAME",
+                "label": "Username",
+                "width": 130
+              },
+              {
+                "key": "EMAIL",
+                "label": "Email",
+                "type": "email",
+                "width": 220
+              },
+              {
+                "key": "PHONE",
+                "label": "Phone",
+                "type": "phone",
+                "width": 130
+              },
+              {
+                "badgeMapping": {
+                  "MANUAL": {
+                    "cssClass": "lov-status-info",
+                    "label": "Manual"
+                  },
+                  "SSO_GOOGLE": {
+                    "cssClass": "lov-status-warning",
+                    "label": "SSO Google"
+                  }
+                },
+                "coloredBadge": true,
+                "key": "AUTH_TYPE",
+                "label": "Auth",
+                "width": 110
+              },
+              {
+                "badgeMapping": {
+                  "N": {
+                    "cssClass": "lov-status-danger",
+                    "label": "Locked"
+                  },
+                  "Y": {
+                    "cssClass": "lov-status-success",
+                    "label": "Active"
+                  }
+                },
+                "coloredBadge": true,
+                "key": "STATUS",
+                "label": "Status",
+                "width": 100
+              },
+              {
+                "badgeMapping": {
+                  "APPROVED": {
+                    "cssClass": "lov-status-success",
+                    "label": "Approved"
+                  },
+                  "PENDING": {
+                    "cssClass": "lov-status-warning",
+                    "label": "Pending"
+                  },
+                  "REJECTED": {
+                    "cssClass": "lov-status-danger",
+                    "label": "Rejected"
+                  }
+                },
+                "coloredBadge": true,
+                "key": "REGISTRATION_STATUS",
+                "label": "Registration",
+                "width": 120
+              },
+              {
+                "dataType": "date",
+                "format": "dd/MM/yyyy HH:mm",
+                "key": "LAST_LOGIN_DATE",
+                "label": "Last Login",
+                "width": 150
+              },
+              {
+                "dataType": "date",
+                "format": "dd/MM/yyyy",
+                "key": "CREATED_AT",
+                "label": "Created",
+                "width": 120
+              }
+            ],
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_keyword",
+                  "sourceField": "f_keyword"
+                },
+                {
+                  "name": "p_status",
+                  "sourceField": "f_status"
+                },
+                {
+                  "name": "p_auth",
+                  "sourceField": "f_auth"
+                },
+                {
+                  "name": "p_reg",
+                  "sourceField": "f_reg_status"
+                }
+              ],
+              "keyField": "USE_ID",
+              "query": "SELECT u.USE_ID, u.USERNAME, u.EMAIL, u.FULL_NAME, u.PHONE, u.AVATAR_URL, u.AUTH_TYPE, u.STATUS, u.REGISTRATION_STATUS, u.LAST_LOGIN_DATE, u.CREATED_AT FROM USERS u WHERE (:p_keyword IS NULL OR LOWER(u.FULL_NAME || ' ' || u.USERNAME || ' ' || u.EMAIL) LIKE LOWER('%'||:p_keyword||'%')) AND (:p_status IS NULL OR u.STATUS = :p_status) AND (:p_auth IS NULL OR u.AUTH_TYPE = :p_auth) AND (:p_reg IS NULL OR u.REGISTRATION_STATUS = :p_reg) ORDER BY u.USE_ID DESC",
+              "tableName": "USERS",
+              "type": "sql"
+            },
+            "pageType": "table",
+            "tableConfig": {
+              "height": "calc(100vh - 280px)",
+              "pageSize": 20
+            },
+            "title": "User List"
+          },
+          "name": "grid_users",
+          "type": "datagrid"
+        }
+      ],
+      "id": "list_region",
+      "type": "plain"
+    }
+  ],
+  "title": "User Management",
+  "description": "Trang chủ của website"
+}

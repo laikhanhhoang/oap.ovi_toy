@@ -1,6 +1,13 @@
+# Thư viện
 node_modules/
 
-# chứa token bí mật, không commit
-.oap-devkit.json
 
+# Thư mục build
 npm-debug.log*
+
+
+# Thư mục chứa các file tạm thời
+
+
+# Thư mục chứa biến môi trường, secret - QUAN TRỌNG
+.oap-devkit.json

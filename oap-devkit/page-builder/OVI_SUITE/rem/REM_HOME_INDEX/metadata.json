@@ -1,0 +1,89 @@
+{
+  "pageCode": "REM_HOME_INDEX",
+  "pageType": "form",
+  "title": "Trang chủ",
+  "dataSource": {
+    "type": "none"
+  },
+  "layout": {
+    "type": "default"
+  },
+  "regions": [
+    {
+      "id": "hero_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "hero_title",
+          "type": "heading",
+          "level": 1,
+          "textAlign": "center",
+          "text": "Tự do lựa chọn loại bất động sản phù hợp nhu cầu của bạn",
+          "layout": {
+            "colSpan": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "parent_groups_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "btn_expand",
+          "type": "action-button",
+          "icon": "chevron-down",
+          "label": "",
+          "variant": "default",
+          "stylingMode": "outlined",
+          "layout": {
+            "col": 1,
+            "colSpan": 1
+          }
+        },
+        {
+          "name": "card_parent_groups",
+          "type": "card-region",
+          "displayAs": "card-grid",
+          "layout": {
+            "col": 2,
+            "colSpan": 11
+          },
+          "config": {
+            "titleField": "RPG_NAME",
+            "subtitleField": "DESCRIPTION",
+            "colSpan": 4
+          },
+          "data": {
+            "type": "query",
+            "query": "SELECT RPG_ID, RPG_NAME, DESCRIPTION FROM ERP.RE_PRODUCT_GROUPS WHERE PARENT_RPG_ID IS NULL AND STATUS = 'Y' ORDER BY RPG_ID"
+          }
+        }
+      ]
+    },
+    {
+      "id": "child_groups_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "card_child_groups",
+          "type": "card-region",
+          "displayAs": "card-grid",
+          "layout": {
+            "colSpan": 12
+          },
+          "config": {
+            "titleField": "RPG_NAME",
+            "subtitleField": "DESCRIPTION",
+            "colSpan": 3
+          },
+          "data": {
+            "type": "query",
+            "query": "SELECT RPG_ID, RPG_NAME, DESCRIPTION, PARENT_RPG_ID FROM ERP.RE_PRODUCT_GROUPS WHERE PARENT_RPG_ID IS NOT NULL AND STATUS = 'Y' ORDER BY PARENT_RPG_ID, RPG_ID"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Trang chủ giới thiệu các loại bất động sản"
+}

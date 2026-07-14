@@ -1,0 +1,118 @@
+{
+  "pageCode": "REM_HOME_INDEX",
+  "pageType": "form",
+  "title": "Trang chủ",
+  "dataSource": { "type": "none" },
+  "layout": { "type": "default" },
+  "regions": [
+    {
+      "id": "hero_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "hero_title",
+          "type": "heading",
+          "level": 1,
+          "textAlign": "center",
+          "text": "Tự do lựa chọn loại bất động sản phù hợp nhu cầu của bạn",
+          "layout": { "colSpan": 12 }
+        }
+      ]
+    },
+    {
+      "id": "parent_groups_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "w_group_kcn",
+          "type": "widget",
+          "layout": { "col": 1, "colSpan": 4, "row": 1 },
+          "metadata": {
+            "icon": "factory",
+            "color": "blue",
+            "title": "Khu công nghiệp",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT COUNT(*) AS VALUE FROM ERP.RE_PRODUCT_GROUPS c WHERE c.STATUS = 'Y' AND c.PARENT_RPG_ID = (SELECT RPG_ID FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_CODE = 'KCN')"
+            }
+          }
+        },
+        {
+          "name": "w_group_ct",
+          "type": "widget",
+          "layout": { "col": 5, "colSpan": 4, "row": 1 },
+          "metadata": {
+            "icon": "building",
+            "color": "green",
+            "title": "Cao tầng",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT COUNT(*) AS VALUE FROM ERP.RE_PRODUCT_GROUPS c WHERE c.STATUS = 'Y' AND c.PARENT_RPG_ID = (SELECT RPG_ID FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_CODE = 'CT')"
+            }
+          }
+        },
+        {
+          "name": "w_group_tt",
+          "type": "widget",
+          "layout": { "col": 9, "colSpan": 4, "row": 1 },
+          "metadata": {
+            "icon": "home",
+            "color": "orange",
+            "title": "Thấp tầng",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT COUNT(*) AS VALUE FROM ERP.RE_PRODUCT_GROUPS c WHERE c.STATUS = 'Y' AND c.PARENT_RPG_ID = (SELECT RPG_ID FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_CODE = 'TT')"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "child_groups_region",
+      "type": "card",
+      "title": "Xem tất cả loại bất động sản",
+      "collapsible": true,
+      "fields": [
+        {
+          "name": "grid_child_groups",
+          "type": "datagrid",
+          "layout": { "colSpan": 12 },
+          "metadata": {
+            "pageType": "table",
+            "columns": [
+              {
+                "key": "RPG_NAME",
+                "label": "Loại bất động sản",
+                "width": 220,
+                "type": "link",
+                "link": {
+                  "modalConfig": {
+                    "pageCode": "SEARCH",
+                    "size": "full",
+                    "title": "Tìm kiếm sản phẩm BĐS"
+                  }
+                }
+              },
+              { "key": "DESCRIPTION", "label": "Mô tả", "minWidth": 300 }
+            ],
+            "dataSource": {
+              "type": "query",
+              "keyField": "RPG_ID",
+              "query": "SELECT RPG_ID, RPG_NAME, DESCRIPTION, PARENT_RPG_ID FROM ERP.RE_PRODUCT_GROUPS WHERE PARENT_RPG_ID IS NOT NULL AND STATUS = 'Y' ORDER BY PARENT_RPG_ID, RPG_ID"
+            },
+            "tableConfig": {
+              "height": "360px",
+              "pageSize": 9,
+              "selection": "single",
+              "searchPanel": false,
+              "columnChooser": false,
+              "exportEnabled": false,
+              "filterRow": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Trang chủ giới thiệu các loại bất động sản"
+}

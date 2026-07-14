@@ -1,0 +1,9 @@
+{
+  "name": "oap-ovi-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OAP @ OVI project workspace",
+  "dependencies": {
+    "@ovigroup/oap-devkit": "1.0.14"
+  }
+}

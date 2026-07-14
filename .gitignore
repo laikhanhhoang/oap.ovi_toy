@@ -1,0 +1,6 @@
+node_modules/
+
+# chứa token bí mật, không commit
+.oap-devkit.json
+
+npm-debug.log*

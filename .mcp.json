@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "oap-devkit": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@ovigroup/oap-devkit"
+      ],
+      "env": {}
+    }
+  }
+}

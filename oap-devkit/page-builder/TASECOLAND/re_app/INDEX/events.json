@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "name": "debug_before_popup",
+    "trigger": "onCellClick",
+    "sourceComponent": "grid_child_groups",
+    "actions": [
+      {
+        "type": "showMessage",
+        "messageType": "info",
+        "message": "DEBUG click row RPG_ID={{event.row.RPG_ID}} RPG_NAME={{event.row.RPG_NAME}}"
+      }
+    ]
+  }
+]

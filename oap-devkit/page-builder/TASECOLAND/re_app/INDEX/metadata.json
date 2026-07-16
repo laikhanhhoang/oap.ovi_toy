@@ -111,7 +111,9 @@
                   "pageCode": "SEARCH",
                   "size": "full",
                   "title": "Tìm kiếm sản phẩm BĐS",
-                  "paramMapping": { "rpg_id": "RPG_ID" }
+                  "paramMapping": {
+                    "rpg_id": "RPG_ID"
+                  }
                 }
               },
               {

@@ -1,5 +1,5 @@
 {
-  "pageCode": "REM_HOME_INDEX",
+  "pageCode": "INDEX",
   "pageType": "form",
   "title": "Trang chủ",
   "dataSource": { "type": "none" },
@@ -86,10 +86,10 @@
                 "width": 220,
                 "type": "link",
                 "modalConfig": {
+                  "keyField": "RPG_ID",
                   "pageCode": "SEARCH",
                   "size": "full",
-                  "title": "Tìm kiếm sản phẩm BĐS",
-                  "paramMapping": { "rpg_id": "RPG_ID" }
+                  "title": "Tìm kiếm sản phẩm BĐS"
                 }
               },
               { "key": "DESCRIPTION", "label": "Mô tả", "minWidth": 300 }

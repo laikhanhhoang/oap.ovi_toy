@@ -1,0 +1,134 @@
+{
+  "dataSource": {
+    "keyField": "OPP_ID",
+    "loadQuery": "SELECT O.OPP_ID, O.OPP_CODE, O.OPP_NAME FROM ERP.OPPORTUNITIES O WHERE O.OPP_ID = :id",
+    "saveMode": "auto",
+    "tableName": "OPPORTUNITIES"
+  },
+  "layout": {
+    "type": "single"
+  },
+  "pageType": "form",
+  "regions": [
+    {
+      "fields": [
+        {
+          "layout": {
+            "col": 1,
+            "colSpan": 6
+          },
+          "name": "OPP_CODE",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "layout": {
+            "col": 7,
+            "colSpan": 6
+          },
+          "name": "OPP_NAME",
+          "type": "text"
+        }
+      ],
+      "id": "header_reg",
+      "type": "card"
+    },
+    {
+      "fields": [
+        {
+          "layout": {
+            "colSpan": 12
+          },
+          "metadata": {
+            "columns": [
+              {
+                "key": "ODE_ID",
+                "visible": false
+              },
+              {
+                "key": "OPP_ID",
+                "visible": false
+              },
+              {
+                "dependentFields": {
+                  "CATEGORY_ID": "MTG_ID",
+                  "UOM_ID": "UOM_ID"
+                },
+                "key": "MAT_ID",
+                "label": "Vật tư",
+                "lovCode": "LOV_MATERIAL",
+                "width": 200
+              },
+              {
+                "allowEditing": false,
+                "key": "CATEGORY_ID",
+                "label": "Nhóm VT",
+                "lovCode": "LOV_MATERIAL_GROUPS",
+                "width": 150
+              },
+              {
+                "allowEditing": false,
+                "key": "UOM_ID",
+                "label": "ĐVT",
+                "lovCode": "LOV_UOM",
+                "width": 100
+              },
+              {
+                "dataType": "number",
+                "format": "#,##0",
+                "key": "EXPECTED_QTY",
+                "label": "Số lượng",
+                "width": 100
+              },
+              {
+                "dataType": "number",
+                "format": "#,##0",
+                "key": "UNIT_PRICE",
+                "label": "Đơn giá",
+                "width": 130
+              },
+              {
+                "key": "DESCRIPTION",
+                "label": "Ghi chú",
+                "minWidth": 150
+              }
+            ],
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_id",
+                  "sourceField": "OPP_ID"
+                }
+              ],
+              "defaultValues": {
+                "OPP_ID": ":p_id"
+              },
+              "keyField": "ODE_ID",
+              "query": "SELECT ODE_ID, OPP_ID, MAT_ID, CATEGORY_ID, UOM_ID, EXPECTED_QTY, UNIT_PRICE, DESCRIPTION FROM ERP.OPPORTUNITY_DETAILS WHERE OPP_ID = :p_id ORDER BY ODE_ID",
+              "saveMode": "auto",
+              "sequence": "OPPORTUNITY_DETAILS_SEQ",
+              "tableName": "OPPORTUNITY_DETAILS",
+              "type": "sql"
+            },
+            "pageType": "table",
+            "tableConfig": {
+              "editing": {
+                "allowAdding": true,
+                "allowDeleting": true,
+                "allowUpdating": true,
+                "mode": "row",
+                "useIcons": true
+              },
+              "height": "calc(100vh - 400px)",
+              "inlineEdit": true
+            }
+          },
+          "name": "grid_products",
+          "type": "datagrid"
+        }
+      ],
+      "id": "products_reg",
+      "type": "card"
+    }
+  ]
+}

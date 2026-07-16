@@ -1,0 +1,86 @@
+{
+  "dataSource": {
+    "type": "none"
+  },
+  "pageType": "form",
+  "regions": [
+    {
+      "fields": [
+        {
+          "layout": {
+            "colSpan": 12
+          },
+          "metadata": {
+            "columns": [
+              {
+                "key": "OPP_ID",
+                "visible": false
+              },
+              {
+                "key": "OPP_CODE",
+                "modalConfig": {
+                  "keyField": "OPP_ID",
+                  "pageCode": "DEP_TEST_FORM",
+                  "size": "xl",
+                  "title": "Chi tiết Deal"
+                },
+                "type": "link",
+                "width": 140
+              },
+              {
+                "key": "OPP_NAME",
+                "minWidth": 220
+              },
+              {
+                "dataType": "number",
+                "format": "#,##0",
+                "key": "EXPECTED_VALUE",
+                "width": 150
+              },
+              {
+                "key": "CUR_CODE",
+                "width": 70
+              },
+              {
+                "dataType": "number",
+                "key": "WIN_PROBABILITY",
+                "width": 100
+              },
+              {
+                "dataType": "number",
+                "format": "#,##0",
+                "key": "FORECAST_AMOUNT",
+                "width": 150
+              },
+              {
+                "key": "SALES_STAGE",
+                "width": 120
+              },
+              {
+                "key": "STATUS",
+                "width": 100
+              }
+            ],
+            "dataSource": {
+              "keyField": "OPP_ID",
+              "query": "SELECT OPP_ID, OPP_CODE, OPP_NAME, EXPECTED_VALUE, CUR_CODE, WIN_PROBABILITY, FORECAST_AMOUNT, SALES_STAGE, STATUS FROM ERP.OPPORTUNITIES ORDER BY OPP_CODE",
+              "tableName": "OPPORTUNITIES",
+              "type": "sql"
+            },
+            "pageType": "table",
+            "tableConfig": {
+              "filterRow": true,
+              "height": "calc(100vh - 180px)",
+              "keyField": "OPP_ID"
+            }
+          },
+          "name": "grid_opp",
+          "type": "datagrid"
+        }
+      ],
+      "id": "list_region",
+      "type": "plain"
+    }
+  ],
+  "title": "Test Dep - Danh sách Deal"
+}

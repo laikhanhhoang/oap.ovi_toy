@@ -1,0 +1,12 @@
+[
+  {
+    "lovCode": "LOV_RE_PRODUCT_GROUP",
+    "lovName": "Nhóm sản phẩm BĐS",
+    "lovType": "SQL",
+    "sqlSource": "SELECT RPG_ID AS value, RPG_NAME AS label, RPG_CODE, RPR_CATEGORY, PGR_CLASS, PARENT_RPG_ID FROM RE_PRODUCT_GROUPS WHERE STATUS = 'Y' ORDER BY RPG_CODE",
+    "valueColumn": "RPG_ID",
+    "displayColumn": "RPG_NAME",
+    "cacheEnabled": true,
+    "description": "@columns: RE_PRODUCTS.RPG_ID, OPPORTUNITY_DETAILS.RPG_ID | LOV nhóm sản phẩm BĐS"
+  }
+]

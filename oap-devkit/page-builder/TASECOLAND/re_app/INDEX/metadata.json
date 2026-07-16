@@ -1,9 +1,15 @@
 {
-  "pageCode": "REM_HOME_INDEX",
+  "pagId": 10667,
   "pageType": "form",
+  "pageName": "Trang chủ - BĐS",
+  "pageCode": "REM_HOME_INDEX",
   "title": "Trang chủ",
-  "dataSource": { "type": "none" },
-  "layout": { "type": "default" },
+  "dataSource": {
+    "type": "none"
+  },
+  "layout": {
+    "type": "default"
+  },
   "regions": [
     {
       "id": "hero_region",
@@ -15,7 +21,9 @@
           "level": 1,
           "textAlign": "center",
           "text": "Tự do lựa chọn loại bất động sản phù hợp nhu cầu của bạn",
-          "layout": { "colSpan": 12 }
+          "layout": {
+            "colSpan": 12
+          }
         }
       ]
     },
@@ -26,7 +34,11 @@
         {
           "name": "w_group_kcn",
           "type": "widget",
-          "layout": { "col": 1, "colSpan": 4, "row": 1 },
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 1
+          },
           "metadata": {
             "icon": "factory",
             "color": "blue",
@@ -40,7 +52,11 @@
         {
           "name": "w_group_ct",
           "type": "widget",
-          "layout": { "col": 5, "colSpan": 4, "row": 1 },
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1
+          },
           "metadata": {
             "icon": "building",
             "color": "green",
@@ -54,7 +70,11 @@
         {
           "name": "w_group_tt",
           "type": "widget",
-          "layout": { "col": 9, "colSpan": 4, "row": 1 },
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 1
+          },
           "metadata": {
             "icon": "home",
             "color": "orange",
@@ -76,7 +96,9 @@
         {
           "name": "grid_child_groups",
           "type": "datagrid",
-          "layout": { "colSpan": 12 },
+          "layout": {
+            "colSpan": 12
+          },
           "metadata": {
             "pageType": "table",
             "columns": [
@@ -92,7 +114,11 @@
                   "paramMapping": { "rpg_id": "RPG_ID" }
                 }
               },
-              { "key": "DESCRIPTION", "label": "Mô tả", "minWidth": 300 }
+              {
+                "key": "DESCRIPTION",
+                "label": "Mô tả",
+                "minWidth": 300
+              }
             ],
             "dataSource": {
               "type": "query",
@@ -113,5 +139,11 @@
       ]
     }
   ],
-  "description": "Trang chủ giới thiệu các loại bất động sản"
+  "description": "Trang chủ giới thiệu các loại bất động sản",
+  "appCode": "re_app",
+  "workspaceCode": "TASECOLAND",
+  "sourceAppCode": "re_app",
+  "sourceWorkspaceCode": "TASECOLAND",
+  "defaultConfig": null,
+  "importConfig": null
 }

@@ -8,7 +8,7 @@
     "orientation": "horizontal",
     "panes": [
       { "id": "search_pane", "size": "320px", "collapsible": true, "regionIds": ["search_form_region"] },
-      { "id": "result_pane", "size": "1fr", "regionIds": ["result_region"] }
+      { "id": "result_pane", "size": "1fr", "regionIds": ["group_info_region", "result_region"] }
     ]
   },
   "regions": [
@@ -27,6 +27,44 @@
         { "name": "f_min_price", "type": "number", "label": "Giá từ" },
         { "name": "f_max_price", "type": "number", "label": "Giá đến" },
         { "name": "f_min_area", "type": "number", "label": "Tổng diện tích tối thiểu (m²)" }
+      ]
+    },
+    {
+      "id": "group_info_region",
+      "type": "card",
+      "title": "Thông tin loại bất động sản",
+      "collapsible": true,
+      "fields": [
+        {
+          "name": "w_group_name",
+          "type": "widget",
+          "layout": { "col": 1, "colSpan": 6, "row": 1 },
+          "metadata": {
+            "icon": "tag",
+            "color": "blue",
+            "title": "Tên loại BĐS",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT RPG_NAME AS VALUE FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_ID = :p_rpg_id",
+              "bindVariables": [{ "name": "p_rpg_id", "sourceField": "f_rpg_id" }]
+            }
+          }
+        },
+        {
+          "name": "w_group_desc",
+          "type": "widget",
+          "layout": { "col": 7, "colSpan": 6, "row": 1 },
+          "metadata": {
+            "icon": "file-text",
+            "color": "cyan",
+            "title": "Mô tả",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT DESCRIPTION AS VALUE FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_ID = :p_rpg_id",
+              "bindVariables": [{ "name": "p_rpg_id", "sourceField": "f_rpg_id" }]
+            }
+          }
+        }
       ]
     },
     {
@@ -67,7 +105,7 @@
     {
       "name": "init_rpg_from_params",
       "trigger": "onLoad",
-      "actions": [ { "type": "setValue", "target": "f_rpg_id", "value": "{{PARAMS.id}}" } ]
+      "actions": [ { "type": "setValue", "target": "f_rpg_id", "value": "{{PARAMS.rpg_id}}" } ]
     }
   ],
   "description": "Tìm kiếm sản phẩm bất động sản theo loại, giá, diện tích"

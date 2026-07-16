@@ -1,0 +1,13 @@
+[
+  {
+    "name": "init_rpg_from_params",
+    "trigger": "onLoad",
+    "actions": [
+      {
+        "type": "setValue",
+        "target": "f_rpg_id",
+        "value": "{{PARAMS.rpg_id}}"
+      }
+    ]
+  }
+]

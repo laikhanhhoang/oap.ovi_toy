@@ -1,0 +1,205 @@
+{
+  "pagId": 10668,
+  "pageType": "form",
+  "pageName": "Tìm kiếm - BĐS",
+  "pageCode": "REM_PRODUCT_SEARCH",
+  "title": "Tìm kiếm sản phẩm BĐS",
+  "dataSource": {
+    "type": "none"
+  },
+  "layout": {
+    "type": "splitter",
+    "orientation": "horizontal",
+    "panes": [
+      {
+        "id": "search_pane",
+        "size": "320px",
+        "collapsible": false,
+        "resizable": true,
+        "regionIds": [
+          "search_form_region"
+        ]
+      },
+      {
+        "id": "result_pane",
+        "size": "1fr",
+        "regionIds": [
+          "group_info_region",
+          "result_region"
+        ]
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "search_form_region",
+      "type": "card",
+      "title": "Tìm kiếm",
+      "fields": [
+        {
+          "name": "f_rpg_id",
+          "type": "select",
+          "label": "Loại bất động sản",
+          "showClearButton": true,
+          "lov": {
+            "code": "LOV_RE_PRODUCT_GROUP"
+          }
+        },
+        {
+          "name": "f_min_price",
+          "type": "number",
+          "label": "Giá từ"
+        },
+        {
+          "name": "f_max_price",
+          "type": "number",
+          "label": "Giá đến"
+        },
+        {
+          "name": "f_min_area",
+          "type": "number",
+          "label": "Tổng diện tích tối thiểu (m²)"
+        }
+      ]
+    },
+    {
+      "id": "group_info_region",
+      "type": "card",
+      "title": "Thông tin loại bất động sản",
+      "collapsible": true,
+      "fields": [
+        {
+          "name": "w_group_name",
+          "type": "widget",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1
+          },
+          "metadata": {
+            "icon": "tag",
+            "color": "blue",
+            "title": "Tên loại BĐS",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT RPG_NAME AS VALUE FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_ID = :p_rpg_id",
+              "bindVariables": [
+                {
+                  "name": "p_rpg_id",
+                  "sourceField": "f_rpg_id"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "w_group_desc",
+          "type": "widget",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1
+          },
+          "metadata": {
+            "icon": "file-text",
+            "color": "cyan",
+            "title": "Mô tả",
+            "dataSource": {
+              "type": "query",
+              "query": "SELECT DESCRIPTION AS VALUE FROM ERP.RE_PRODUCT_GROUPS WHERE RPG_ID = :p_rpg_id",
+              "bindVariables": [
+                {
+                  "name": "p_rpg_id",
+                  "sourceField": "f_rpg_id"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "result_region",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "grid_products",
+          "type": "datagrid",
+          "layout": {
+            "colSpan": 12
+          },
+          "metadata": {
+            "pageType": "table",
+            "columns": [
+              {
+                "key": "RPR_CODE",
+                "label": "Mã sản phẩm",
+                "width": 140
+              },
+              {
+                "key": "RPG_NAME",
+                "label": "Loại BĐS",
+                "width": 160
+              },
+              {
+                "key": "UNIT_PRICE",
+                "label": "Đơn giá",
+                "dataType": "number",
+                "alignment": "right",
+                "width": 140
+              },
+              {
+                "key": "TOTAL_AREA",
+                "label": "Tổng diện tích",
+                "dataType": "number",
+                "alignment": "right",
+                "width": 130
+              },
+              {
+                "key": "STATUS",
+                "label": "Trạng thái",
+                "coloredBadge": true,
+                "width": 120
+              }
+            ],
+            "dataSource": {
+              "type": "query",
+              "keyField": "RPR_ID",
+              "bindVariables": [
+                {
+                  "name": "p_rpg_id",
+                  "sourceField": "f_rpg_id"
+                },
+                {
+                  "name": "p_min_price",
+                  "sourceField": "f_min_price"
+                },
+                {
+                  "name": "p_max_price",
+                  "sourceField": "f_max_price"
+                },
+                {
+                  "name": "p_min_area",
+                  "sourceField": "f_min_area"
+                }
+              ],
+              "query": "SELECT p.RPR_ID, p.RPR_CODE, rpg.RPG_NAME, p.UNIT_PRICE, p.STATUS, (NVL(p.AREA_PRIMARY,0) + NVL(p.AREA_SECONDARY,0)) AS TOTAL_AREA FROM ERP.RE_PRODUCTS p LEFT JOIN ERP.RE_PRODUCT_GROUPS rpg ON p.RPG_ID = rpg.RPG_ID WHERE (:p_rpg_id IS NULL OR rpg.RPG_ID = :p_rpg_id OR rpg.PARENT_RPG_ID = :p_rpg_id) AND (:p_min_price IS NULL OR p.UNIT_PRICE >= :p_min_price) AND (:p_max_price IS NULL OR p.UNIT_PRICE <= :p_max_price) AND (:p_min_area IS NULL OR (NVL(p.AREA_PRIMARY,0) + NVL(p.AREA_SECONDARY,0)) >= :p_min_area) ORDER BY p.RPR_CODE"
+            },
+            "tableConfig": {
+              "height": "calc(100vh - 180px)",
+              "pageSize": 25,
+              "columnChooser": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Tìm kiếm sản phẩm bất động sản theo loại, giá, diện tích",
+  "appCode": "re_app",
+  "workspaceCode": "TASECOLAND",
+  "sourceAppCode": "re_app",
+  "sourceWorkspaceCode": "TASECOLAND",
+  "defaultConfig": null,
+  "importConfig": null
+}

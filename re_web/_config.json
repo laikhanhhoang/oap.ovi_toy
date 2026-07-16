@@ -1,0 +1,8 @@
+{
+    "workspaceCode": "TASECOLAND",
+    "appCode": "re_app",
+    "filejson_pageCode": [
+        ["index.json", "INDEX"],
+        ["search.json", "SEARCH"]
+    ]
+}

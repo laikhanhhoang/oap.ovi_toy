@@ -1,0 +1,67 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "GRID_TEST_5",
+  "pageType": "form",
+  "title": "Embedded datagrid trong form",
+  "dataSource": {
+    "type": "none"
+  },
+  "regions": [
+    {
+      "id": "appointments_region",
+      "title": "Thông tin lịch hẹn",
+      "type": "form",
+      "fields": [
+        {
+          "name": "APPOINTMENTS",
+          "type": "datagrid",
+          "label": "Danh sách lịch hẹn",
+          "metadata": {
+            "height":             "calc(100vh - 280px)",
+            "exportEnabled":      true,
+            "searchPanel":        true,
+            "columnChooser":      true,
+            "grouping":           true,
+            "headerFilter":       true,
+            "filterRow":          true,
+
+            "dataSource": {
+              "type":             "query",
+              "query":            "SELECT APPOINTMENT_ID, PATIENT_ID, DOCTOR_ID, APPOINTMENT_DATE, APPOINTMENT_TIME, REASON_FOR_VISIT, STATUS FROM DEMO_APPOINTMENTS",
+              "keyField":         "APPOINTMENT_ID",
+              "saveMode":         "auto",
+              "tableName":        "DEMO_APPOINTMENTS"
+            },
+            "tableConfig": {
+              "height":           "420px",
+              "rowHeight":        32,
+              "pageSize":         25,
+              "compact":          true,
+              "search":           true,
+              "filterPanel":      true,
+              "columnFixing":     true,
+              "stateStoring":     true,
+              "defaultGrouping":  ["STATUS"],
+              "selection":        "multiple",
+              "editing": {
+                "mode":           "batch",
+                "allowAdding":    true,
+                "allowUpdating":  true,
+                "allowDeleting":  true
+              }
+            },
+            "columns": [
+              {"key": "APPOINTMENT_ID",   "label": "Mã định danh",  "visible": false },
+              {"key": "PATIENT_ID",       "label": "Mã bệnh nhân",  "type": "text",   "width": 120, "required": true },
+              {"key": "DOCTOR_ID",        "label": "Mã bác sĩ",     "type": "text",   "width": 120, "required": true },
+              {"key": "APPOINTMENT_DATE", "label": "Ngày hẹn",      "type": "date",   "format": "dd/MM/yyyy", "width": 150, "alignment": "center" },
+              {"key": "APPOINTMENT_TIME", "label": "Giờ hẹn",       "type": "text",   "width": 100, "alignment": "center" },
+              {"key": "REASON_FOR_VISIT", "label": "Lý do khám",    "type": "text",   "width": 250, "visible": false, "allowEditing": false },
+              {"key": "STATUS",           "label": "Trạng thái",    "type": "select", "lovCode": "LOV_APPOINTMENT_STATUS", "minWidth": 150 }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

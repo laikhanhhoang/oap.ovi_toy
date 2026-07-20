@@ -1,0 +1,60 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "GRID_TEST_1",
+  "pageType": "datagrid",
+  "title": "Danh sách bác sĩ",
+  "dataSource": {
+    "type": "query",
+    "keyField": "DOCTOR_ID",
+    "query": "SELECT DOCTOR_ID, FIRST_NAME, LAST_NAME, SPECIALIZATION, PHONE_NUMBER, YEARS_EXPERIENCE, HOSPITAL_BRANCH, EMAIL FROM DEMO_DOCTORS"
+  },
+  "selection": "multiple",
+  "columns": [
+    {
+      "key": "DOCTOR_ID",
+      "visible": false
+    },
+    {
+      "key": "FIRST_NAME",
+      "label": "Họ và tên đệm",
+      "type": "text",
+      "width": 150
+    },
+    {
+      "key": "LAST_NAME",
+      "label": "Tên",
+      "type": "text",
+      "width": 100
+    },
+    {
+      "key": "SPECIALIZATION",
+      "label": "Chuyên khoa",
+      "type": "text",
+      "width": 150
+    },
+    {
+      "key": "PHONE_NUMBER",
+      "label": "Số điện thoại",
+      "type": "phone",
+      "width": 130
+    },
+    {
+      "key": "YEARS_EXPERIENCE",
+      "label": "Kinh nghiệm (năm)",
+      "type": "number",
+      "width": 120
+    },
+    {
+      "key": "HOSPITAL_BRANCH",
+      "label": "Chi nhánh",
+      "type": "text",
+      "width": 180
+    },
+    {
+      "key": "EMAIL",
+      "label": "Email",
+      "type": "email",
+      "minWidth": 200
+    }
+  ]
+}

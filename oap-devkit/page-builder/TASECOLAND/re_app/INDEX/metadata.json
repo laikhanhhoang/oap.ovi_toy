@@ -100,7 +100,7 @@
             "colSpan": 12
           },
           "metadata": {
-            "pageType": "table",
+            "pageType": "datagrid",
             "columns": [
               {
                 "key": "RPG_NAME",

@@ -1,0 +1,69 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "GRID_TEST_3",
+  "pageType": "form",
+  "title": "Embedded datagrid trong form",
+  "dataSource": {
+    "type": "none"
+  },
+  "regions": [
+    {
+      "id": "doctors_region",
+      "title": "Thông tin bác sĩ",
+      "type": "form",
+      "fields": [
+        {
+          "name": "DOCTORS",
+          "type": "datagrid",
+          "label": "Danh sách bác sĩ",
+          "metadata": {
+            "height":             "calc(100vh - 280px)",
+            "exportEnabled":      true,
+            "searchPanel":        true,
+            "columnChooser":      true,
+            "grouping":           true,
+            "headerFilter":       true,
+            "filterRow":          true,
+
+            "dataSource": {
+              "type":             "query",
+              "query":            "SELECT DOCTOR_ID, FIRST_NAME, LAST_NAME, SPECIALIZATION, PHONE_NUMBER, YEARS_EXPERIENCE, HOSPITAL_BRANCH, EMAIL FROM DEMO_DOCTORS",
+              "keyField":         "DOCTOR_ID",
+              "saveMode":         "auto",
+              "tableName":        "DEMO_DOCTORS",
+              "sequence":         "DEMO_DOCTORS_SEQ"
+            },
+            "tableConfig": {
+              "height":           "420px",
+              "rowHeight":        32,
+              "pageSize":         50,
+              "compact":          true,
+              "search":           true,
+              "filterPanel":      true,
+              "columnFixing":     true,
+              "stateStoring":     true,
+              "defaultGrouping":  ["SPECIALIZATION"],
+              "selection":        "multiple",
+              "editing": {
+                "mode":           "batch",
+                "allowAdding":    true,
+                "allowUpdating":  true,
+                "allowDeleting":  true
+              }
+            },
+            "columns": [
+              {"key": "DOCTOR_ID",         "label": "Mã định danh",       "visible": false },
+              {"key": "FIRST_NAME",        "label": "Họ và tên đệm",      "type": "text",   "width": 150 },
+              {"key": "LAST_NAME",         "label": "Tên",                "type": "text",   "width": 100 },
+              {"key": "SPECIALIZATION",    "label": "Chuyên khoa",        "type": "text",   "width": 150 },
+              {"key": "PHONE_NUMBER",      "label": "Số điện thoại",      "type": "phone",  "width": 130 },
+              {"key": "YEARS_EXPERIENCE",  "label": "Kinh nghiệm (năm)",  "type": "number", "width": 120 },
+              {"key": "HOSPITAL_BRANCH",   "label": "Chi nhánh",          "type": "text",   "width": 180 },
+              {"key": "EMAIL",             "label": "Email",              "type": "email",  "minWidth": 200 }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

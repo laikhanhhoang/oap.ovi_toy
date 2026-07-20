@@ -38,12 +38,12 @@
           "type": "datagrid",
           "layout": { "colSpan": 12 },
           "metadata": {
-            "pageType": "table",
+            "pageType": "datagrid",
             "columns": [
               { "key": "RPR_CODE",    "label": "Mã sản phẩm",     "width": 140 },
               { "key": "RPG_NAME",    "label": "Loại BĐS",        "width": 160 },
-              { "key": "UNIT_PRICE",  "label": "Đơn giá",         "dataType": "number", "alignment": "right", "width": 140 },
-              { "key": "TOTAL_AREA",  "label": "Tổng diện tích",  "dataType": "number", "alignment": "right", "width": 130 },
+              { "key": "UNIT_PRICE",  "label": "Đơn giá",         "type": "number", "alignment": "right", "width": 140 },
+              { "key": "TOTAL_AREA",  "label": "Tổng diện tích",  "type": "number", "alignment": "right", "width": 130 },
               { "key": "STATUS",      "label": "Trạng thái",      "coloredBadge": true, "width": 120 }
             ],
             "dataSource": {

@@ -376,14 +376,14 @@
                 "width": 120
               },
               {
-                "dataType": "date",
+                "type": "date",
                 "format": "dd/MM/yyyy HH:mm",
                 "key": "LAST_LOGIN_DATE",
                 "label": "Last Login",
                 "width": 150
               },
               {
-                "dataType": "date",
+                "type": "date",
                 "format": "dd/MM/yyyy",
                 "key": "CREATED_AT",
                 "label": "Created",
@@ -414,7 +414,7 @@
               "tableName": "USERS",
               "type": "sql"
             },
-            "pageType": "table",
+            "pageType": "datagrid",
             "tableConfig": {
               "height": "calc(100vh - 280px)",
               "pageSize": 20

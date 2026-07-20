@@ -6,7 +6,7 @@
     "tableName": "OPPORTUNITIES"
   },
   "layout": {
-    "type": "single"
+    "type": "default"
   },
   "pageType": "form",
   "regions": [
@@ -74,17 +74,17 @@
                 "width": 100
               },
               {
-                "dataType": "number",
-                "format": "#,##0",
                 "key": "EXPECTED_QTY",
                 "label": "Số lượng",
+                "type": "number",
+                "format": "#,##0",
                 "width": 100
               },
               {
-                "dataType": "number",
-                "format": "#,##0",
                 "key": "UNIT_PRICE",
                 "label": "Đơn giá",
+                "type": "number",
+                "format": "#,##0",
                 "width": 130
               },
               {
@@ -108,7 +108,7 @@
               "saveMode": "auto",
               "sequence": "OPPORTUNITY_DETAILS_SEQ",
               "tableName": "OPPORTUNITY_DETAILS",
-              "type": "sql"
+              "type": "query"
             },
             "pageType": "table",
             "tableConfig": {
@@ -116,11 +116,10 @@
                 "allowAdding": true,
                 "allowDeleting": true,
                 "allowUpdating": true,
-                "mode": "row",
+                "mode": "batch",
                 "useIcons": true
               },
-              "height": "calc(100vh - 400px)",
-              "inlineEdit": true
+              "height": "calc(100vh - 400px)"
             }
           },
           "name": "grid_products",

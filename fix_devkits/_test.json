@@ -1,0 +1,91 @@
+{
+    "metadataVersion": 2,
+    "pageCode": "EMBED_GRID_IN_FORM",
+    "pageType": "form",
+    "title": "Embedded datagrid trong form",
+    "dataSource": {
+        "type": "none"
+    },
+    "regions": [
+        {
+            "id": "doctors_region",
+            "title": "Thông tin bác sĩ",
+            "type": "form",
+            "fields": [
+                {
+                    "name": "DOCTORS",
+                    "type": "datagrid",
+                    "label": "Danh sách bác sĩ",
+                    "metadata": {
+                        "dataSource": {
+                            "type": "query",
+                            "keyField": "DOCTOR_ID",
+                            "query": "SELECT FIRST_NAME, LAST_NAME, SPECIALIZATION, PHONE_NUMBER, YEARS_EXPERIENCE, HOSPITAL_BRANCH, EMAIL FROM DEMO_DOCTORS"
+                        },
+                        "tableConfig": {
+                            "height": "420px",
+                            "rowHeight": 34,
+                            "pageSize": 25,
+                            "selection": "multiple",
+                            "editing": {
+                                "mode": "batch",
+                                "allowAdding": true,
+                                "allowUpdating": true,
+                                "allowDeleting": true
+                            }
+                        },
+                        "filterRow": true,
+                        "searchPanel": true,
+                        "headerFilter": true,
+                        "columnChooser": true,
+                        "exportEnabled": true,
+                        "columns": [
+                            {
+                                "key": "FIRST_NAME",
+                                "label": "Họ và tên đệm",
+                                "type": "text",
+                                "width": 150
+                            },
+                            {
+                                "key": "LAST_NAME",
+                                "label": "Tên",
+                                "type": "text",
+                                "width": 100
+                            },
+                            {
+                                "key": "SPECIALIZATION",
+                                "label": "Chuyên khoa",
+                                "type": "text",
+                                "width": 150
+                            },
+                            {
+                                "key": "PHONE_NUMBER",
+                                "label": "Số điện thoại",
+                                "type": "phone",
+                                "width": 130
+                            },
+                            {
+                                "key": "YEARS_EXPERIENCE",
+                                "label": "Kinh nghiệm (năm)",
+                                "type": "number",
+                                "width": 120
+                            },
+                            {
+                                "key": "HOSPITAL_BRANCH",
+                                "label": "Chi nhánh",
+                                "type": "text",
+                                "width": 180
+                            },
+                            {
+                                "key": "EMAIL",
+                                "label": "Email",
+                                "type": "email",
+                                "minWidth": 200
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

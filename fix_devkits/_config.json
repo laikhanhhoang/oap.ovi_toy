@@ -1,0 +1,22 @@
+{
+    "workspace": "TASECOLAND",
+    "appCode": "hoagk_app_testing_1",
+    "pageCode_local_server": [
+        [
+            "GRID_TEST_1",
+            "GRID_TEST_1"
+        ],
+        [
+            "GRID_TEST_2",
+            "GRID_TEST_2"
+        ],
+        [
+            "GRID_TEST_3",
+            "GRID_TEST_3"
+        ],
+        [
+            "GRID_TEST_5",
+            "GRID_TEST_5"
+        ]
+    ]
+}

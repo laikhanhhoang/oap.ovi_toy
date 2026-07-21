@@ -12,3 +12,6 @@ npm-debug.log*
 # Thư mục chứa biến môi trường, secret - QUAN TRỌNG
 .oap-devkit.json
 
+
+# Thư mục chứa logic riêng của công ty
+AN_CAP_CHAN/

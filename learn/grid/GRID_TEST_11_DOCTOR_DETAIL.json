@@ -1,0 +1,27 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "GRID_TEST_11_DOCTOR_DETAIL",
+  "pageType": "form",
+  "title": "Chi tiết bác sĩ",
+  "dataSource": {
+    "type": "query",
+    "query": "SELECT DOCTOR_ID, FIRST_NAME, LAST_NAME, SPECIALIZATION, PHONE_NUMBER, YEARS_EXPERIENCE, HOSPITAL_BRANCH, EMAIL FROM DEMO_DOCTORS WHERE DOCTOR_ID = :DOCTOR_ID",
+    "keyField": "DOCTOR_ID"
+  },
+  "regions": [
+    {
+      "id": "doctor_info",
+      "title": "Thông tin bác sĩ",
+      "type": "form",
+      "fields": [
+        { "name": "FIRST_NAME", "type": "text", "label": "Họ và tên đệm", "readOnly": true },
+        { "name": "LAST_NAME", "type": "text", "label": "Tên", "readOnly": true },
+        { "name": "SPECIALIZATION", "type": "text", "label": "Chuyên khoa", "readOnly": true },
+        { "name": "PHONE_NUMBER", "type": "phone", "label": "Số điện thoại", "readOnly": true },
+        { "name": "YEARS_EXPERIENCE", "type": "number", "label": "Kinh nghiệm (năm)", "readOnly": true },
+        { "name": "HOSPITAL_BRANCH", "type": "text", "label": "Chi nhánh", "readOnly": true },
+        { "name": "EMAIL", "type": "email", "label": "Email", "readOnly": true }
+      ]
+    }
+  ]
+}

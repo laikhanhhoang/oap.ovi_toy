@@ -1,0 +1,89 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "GRID_TEST_7",
+  "pageType": "form",
+  "title": "Embedded datagrid trong form",
+  "dataSource": {
+    "type": "none"
+  },
+  "regions": [
+    {
+      "id": "appointments_region",
+      "title": "Thông tin lịch hẹn",
+      "type": "form",
+      "fields": [
+        {
+          "name": "APPOINTMENTS",
+          "type": "datagrid",
+          "label": "Danh sách lịch hẹn",
+          "metadata": {
+            "height":             "calc(100vh - 280px)",
+            "exportEnabled":      true,
+            "searchPanel":        true,
+            "columnChooser":      true,
+            "grouping":           true,
+            "headerFilter":       true,
+            "filterRow":          true,
+
+            "dataSource": {
+              "type":             "query",
+              "query":            "SELECT a.APPOINTMENT_ID, a.PATIENT_ID, a.DOCTOR_ID, a.APPOINTMENT_DATE, a.APPOINTMENT_TIME, a.REASON_FOR_VISIT, a.STATUS, d.SPECIALIZATION FROM DEMO_APPOINTMENTS a LEFT JOIN DEMO_DOCTORS d ON a.DOCTOR_ID = d.DOCTOR_ID",
+              "keyField":         "APPOINTMENT_ID",
+              "saveMode":         "auto",
+              "tableName":        "DEMO_APPOINTMENTS"
+            },
+            "tableConfig": {
+              "height":           "420px",
+              "rowHeight":        32,
+              "pageSize":         10,
+              "compact":          true,
+              "search":           true,
+              "filterPanel":      true,
+              "columnFixing":     true,
+              "stateStoring":     true,
+              "defaultGrouping":  ["STATUS"],
+              "selection":        "multiple",
+              "editing": {
+                "mode":           "batch",
+                "allowAdding":    true,
+                "allowUpdating":  true,
+                "allowDeleting":  true
+              }
+            },
+            "columns": [
+              {"key": "APPOINTMENT_ID",   "label": "Mã định danh",  "visible": false },
+              {"key": "PATIENT_ID",       "label": "Mã bệnh nhân",  "type": "text",   "width": 120, "required": true },
+              {"key": "SPECIALIZATION",   "label": "Chuyên khoa",   "type": "select", "lovCode": "LOV_SPECIALIZATIONS", "width": 150},
+              {"key": "DOCTOR_ID",        "label": "Bác sĩ",        "type": "select", "lovCode": "LOV_DEMO_DOCTORS_BY_SPEC", "width": 150, "required": true, "dependsOn": "SPECIALIZATION"},
+              {"key": "APPOINTMENT_DATE", "label": "Ngày hẹn",      "type": "date",   "format": "dd/MM/yyyy", 
+                "width": 150, "alignment": "center",
+                "conditionalVisible": {
+                    "mode": "expression",
+                    "expression": "STATUS == 'No-show'",
+                    "default": false
+                },
+                "conditionalRequired": {
+                    "mode": "expression",
+                    "expression": "STATUS == 'Scheduled'"
+                },
+                "conditionalReadonly": {
+                    "mode": "expression",
+                    "expression": "STATUS == 'Cancelled'"
+                }
+              },
+              {"key": "APPOINTMENT_TIME", "label": "Giờ hẹn",       "type": "text",   "width": 100, "alignment": "center" },
+              {"key": "REASON_FOR_VISIT", "label": "Lý do khám",    "type": "text",   "width": 250, "visible": false, "allowEditing": false },
+              {"key": "STATUS",           "label": "Trạng thái",    "type": "select", "lovCode": "LOV_APPOINTMENT_STATUS", "minWidth": 150 },
+              {"key": "SUMMARY",          "label": "Tóm tắt",       "type": "text",   "width": 250, "visible": true, "allowEditing": true,
+                  "computed": {
+                      "dependsOn": ["APPOINTMENT_DATE", "APPOINTMENT_TIME"],   
+                      "expression":   "APPOINTMENT_DATE && APPOINTMENT_TIME ? APPOINTMENT_DATE + ' ' + APPOINTMENT_TIME : null"
+                  }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

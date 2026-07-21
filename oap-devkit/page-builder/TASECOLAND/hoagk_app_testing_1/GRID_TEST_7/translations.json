@@ -1,0 +1,26 @@
+{
+  "en": {
+    "APPOINTMENTS": "Appointment List",
+    "APPOINTMENT_DATE": "Appointment Date",
+    "APPOINTMENT_TIME": "Appointment Time",
+    "DOCTOR_ID": "Doctor",
+    "SPECIALIZATION": "Specialization",
+    "PATIENT_ID": "Patient ID",
+    "REASON_FOR_VISIT": "Reason for Visit",
+    "STATUS": "Status",
+    "appointments_region": "Appointment Info",
+    "SUMMARY": "Summary"
+  },
+  "vi": {
+    "APPOINTMENTS": "Danh sách lịch hẹn",
+    "APPOINTMENT_DATE": "Ngày hẹn",
+    "APPOINTMENT_TIME": "Giờ hẹn",
+    "DOCTOR_ID": "Bác sĩ",
+    "SPECIALIZATION": "Chuyên khoa",
+    "PATIENT_ID": "Mã bệnh nhân",
+    "REASON_FOR_VISIT": "Lý do khám",
+    "STATUS": "Trạng thái",
+    "appointments_region": "Thông tin lịch hẹn",
+    "SUMMARY": "Tóm tắt"
+  }
+}

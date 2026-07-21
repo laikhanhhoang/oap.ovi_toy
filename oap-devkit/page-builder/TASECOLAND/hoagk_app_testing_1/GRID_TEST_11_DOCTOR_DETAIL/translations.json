@@ -1,0 +1,22 @@
+{
+  "en": {
+    "doctor_info": "Doctor Information",
+    "FIRST_NAME": "First Name",
+    "LAST_NAME": "Last Name",
+    "SPECIALIZATION": "Specialization",
+    "PHONE_NUMBER": "Phone Number",
+    "YEARS_EXPERIENCE": "Experience (Years)",
+    "HOSPITAL_BRANCH": "Hospital Branch",
+    "EMAIL": "Email"
+  },
+  "vi": {
+    "doctor_info": "Thông tin bác sĩ",
+    "FIRST_NAME": "Họ và tên đệm",
+    "LAST_NAME": "Tên",
+    "SPECIALIZATION": "Chuyên khoa",
+    "PHONE_NUMBER": "Số điện thoại",
+    "YEARS_EXPERIENCE": "Kinh nghiệm (năm)",
+    "HOSPITAL_BRANCH": "Chi nhánh",
+    "EMAIL": "Email"
+  }
+}

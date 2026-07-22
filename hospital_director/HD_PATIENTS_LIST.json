@@ -1,0 +1,224 @@
+{
+    "metadataVersion": 2,
+    "pageCode": "HD_PATIENTS_LIST",
+    "pageType": "form",
+    "title": "Danh sách Bệnh nhân",
+    "dataSource": {
+        "type": "none"
+    },
+    "layout": {
+        "type": "splitter",
+        "orientation": "horizontal",
+        "panes": [
+            {
+                "id": "filters_pane",
+                "regionIds": [
+                    "filter_region"
+                ],
+                "size": "280px",
+                "collapsible": true
+            },
+            {
+                "id": "list_center",
+                "regionIds": [
+                    "list_region"
+                ],
+                "size": "1fr"
+            }
+        ]
+    },
+    "regions": [
+        {
+            "id": "filter_region",
+            "type": "card",
+            "title": "Bộ lọc tìm kiếm",
+            "fields": [
+                {
+                    "name": "f_patient_code",
+                    "type": "text",
+                    "label": "Mã bệnh nhân",
+                    "placeholder": "Nhập mã bệnh nhân...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "f_fullname",
+                    "type": "text",
+                    "label": "Họ và tên",
+                    "placeholder": "Nhập họ và tên...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 2
+                    }
+                },
+                {
+                    "name": "f_gender",
+                    "type": "select",
+                    "label": "Giới tính",
+                    "placeholder": "Tất cả",
+                    "showClearButton": true,
+                    "lov": {
+                        "code": "LOV_SEX"
+                    },
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 3
+                    }
+                },
+                {
+                    "name": "f_phone_number",
+                    "type": "text",
+                    "label": "Số điện thoại",
+                    "placeholder": "Nhập số điện thoại...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 4
+                    }
+                },
+                {
+                    "name": "f_blood_type",
+                    "type": "text",
+                    "label": "Nhóm máu",
+                    "placeholder": "Nhập nhóm máu...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 5
+                    }
+                },
+                {
+                    "name": "f_allergies",
+                    "type": "text",
+                    "label": "Dị ứng",
+                    "placeholder": "Nhập thông tin dị ứng...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 6
+                    }
+                }
+            ]
+        },
+        {
+            "id": "list_region",
+            "type": "card",
+            "title": "Danh sách bệnh nhân",
+            "fields": [
+                {
+                    "name": "grid_patients",
+                    "type": "datagrid",
+                    "layout": {
+                        "colSpan": 12
+                    },
+                    "metadata": {
+                        "pageType": "datagrid",
+                        "height": "calc(100vh - 180px)",
+                        "filterRow": true,
+                        "searchPanel": true,
+                        "headerFilter": true,
+                        "columnChooser": true,
+                        "exportEnabled": true,
+                        "dataSource": {
+                            "type": "query",
+                            "tableName": "DEMO_PATIENTS",
+                            "keyField": "PATIENT_ID",
+                            "bindVariables": [
+                                {
+                                    "name": "p_patient_code",
+                                    "sourceField": "f_patient_code"
+                                },
+                                {
+                                    "name": "p_fullname",
+                                    "sourceField": "f_fullname"
+                                },
+                                {
+                                    "name": "p_gender",
+                                    "sourceField": "f_gender"
+                                },
+                                {
+                                    "name": "p_phone_number",
+                                    "sourceField": "f_phone_number"
+                                },
+                                {
+                                    "name": "p_blood_type",
+                                    "sourceField": "f_blood_type"
+                                },
+                                {
+                                    "name": "p_allergies",
+                                    "sourceField": "f_allergies"
+                                }
+                            ],
+                            "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, BLOOD_TYPE, ALLERGIES FROM DEMO_PATIENTS WHERE (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') AND (:p_blood_type IS NULL OR LOWER(BLOOD_TYPE) LIKE LOWER('%'||:p_blood_type||'%')) AND (:p_allergies IS NULL OR LOWER(ALLERGIES) LIKE LOWER('%'||:p_allergies||'%')) ORDER BY PATIENT_ID"
+                        },
+                        "tableConfig": {
+                            "height": "calc(100vh - 220px)",
+                            "pageSize": 15,
+                            "search": true,
+                            "filterPanel": true,
+                            "selection": "single"
+                        },
+                        "columns": [
+                            {
+                                "key": "PATIENT_CODE",
+                                "label": "Mã bệnh nhân",
+                                "type": "link",
+                                "width": 150,
+                                "allowSorting": true,
+                                "modalConfig": {
+                                    "keyField": "PATIENT_ID",
+                                    "pageCode": "HD_PATIENT_FORM",
+                                    "size": "xl",
+                                    "title": "Thông tin chi tiết bệnh nhân"
+                                }
+                            },
+                            {
+                                "key": "FULLNAME",
+                                "label": "Họ và tên",
+                                "type": "text",
+                                "width": 250,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "GENDER",
+                                "label": "Giới tính",
+                                "type": "select",
+                                "lovCode": "LOV_SEX",
+                                "width": 120,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "PHONE_NUMBER",
+                                "label": "Số điện thoại",
+                                "type": "phone",
+                                "width": 150,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "BLOOD_TYPE",
+                                "label": "Nhóm máu",
+                                "type": "text",
+                                "width": 110,
+                                "alignment": "center",
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "ALLERGIES",
+                                "label": "Dị ứng",
+                                "type": "text",
+                                "minWidth": 200,
+                                "allowSorting": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "description": "Trang danh sách bệnh nhân với bố cục splitter (bộ lọc bên trái, danh sách bên phải)"
+}

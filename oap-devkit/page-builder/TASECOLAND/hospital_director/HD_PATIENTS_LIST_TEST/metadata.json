@@ -1,0 +1,50 @@
+{
+  "dataSource": {
+    "type": "none"
+  },
+  "description": "Thử nghiệm form không có root dataSource và khai báo query riêng ở từng field",
+  "layout": {
+    "type": "single"
+  },
+  "metadataVersion": 2,
+  "pageCode": "HD_PATIENTS_LIST_TEST",
+  "pageType": "form",
+  "regions": [
+    {
+      "fields": [
+        {
+          "dataSource": {
+            "query": "SELECT PATIENT_CODE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id",
+            "type": "query"
+          },
+          "label": "Mã bệnh nhân",
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1
+          },
+          "name": "PATIENT_CODE",
+          "type": "text"
+        },
+        {
+          "dataSource": {
+            "query": "SELECT FIRST_NAME FROM DEMO_PATIENTS WHERE PATIENT_ID = :id",
+            "type": "query"
+          },
+          "label": "Họ và tên đệm",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1
+          },
+          "name": "FIRST_NAME",
+          "type": "text"
+        }
+      ],
+      "id": "general_info_region",
+      "title": "Thông tin bệnh nhân (Test Per-Field Query)",
+      "type": "card"
+    }
+  ],
+  "title": "Test Form Không dùng Root DataSource"
+}

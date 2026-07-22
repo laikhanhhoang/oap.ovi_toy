@@ -1,0 +1,217 @@
+{
+    "metadataVersion": 2,
+    "pageCode": "HD_PATIENT_FORM",
+    "pageType": "form",
+    "title": "Thông tin chi tiết Bệnh nhân",
+    "dataSource": {
+        "type": "query",
+        "tableName": "DEMO_PATIENTS",
+        "keyField": "PATIENT_ID",
+        "loadQuery": "SELECT PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER, BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id",
+        "saveMode": "auto"
+    },
+    "layout": {
+        "type": "single"
+    },
+    "regions": [
+        {
+            "id": "code_region",
+            "type": "card",
+            "title": "Mã định danh bệnh nhân",
+            "fields": [
+                {
+                    "name": "PATIENT_CODE",
+                    "label": "Mã bệnh nhân",
+                    "type": "text",
+                    "required": true,
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": "general_info_region",
+            "type": "card",
+            "title": "Thông tin chung bệnh nhân",
+            "fields": [
+                {
+                    "name": "FIRST_NAME",
+                    "label": "Họ và tên đệm",
+                    "type": "text",
+                    "required": true,
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 6,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "LAST_NAME",
+                    "label": "Tên",
+                    "type": "text",
+                    "required": true,
+                    "layout": {
+                        "col": 7,
+                        "colSpan": 6,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "DATE_OF_BIRTH",
+                    "label": "Ngày sinh",
+                    "type": "date",
+                    "format": "dd/MM/yyyy",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 4,
+                        "row": 2
+                    }
+                },
+                {
+                    "name": "GENDER",
+                    "label": "Giới tính",
+                    "type": "select",
+                    "lov": {
+                        "code": "LOV_SEX"
+                    },
+                    "layout": {
+                        "col": 5,
+                        "colSpan": 4,
+                        "row": 2
+                    }
+                },
+                {
+                    "name": "IDENTITY_NUMBER",
+                    "label": "Số CMND / CCCD",
+                    "type": "text",
+                    "layout": {
+                        "col": 9,
+                        "colSpan": 4,
+                        "row": 2
+                    }
+                },
+                {
+                    "name": "PHONE_NUMBER",
+                    "label": "Số điện thoại",
+                    "type": "phone",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 6,
+                        "row": 3
+                    }
+                },
+                {
+                    "name": "EMAIL",
+                    "label": "Email",
+                    "type": "email",
+                    "layout": {
+                        "col": 7,
+                        "colSpan": 6,
+                        "row": 3
+                    }
+                },
+                {
+                    "name": "ADDRESS",
+                    "label": "Địa chỉ",
+                    "type": "textarea",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 4
+                    }
+                }
+            ]
+        },
+        {
+            "id": "medical_info_region",
+            "type": "card",
+            "title": "Thông tin y tế & bảo hiểm",
+            "fields": [
+                {
+                    "name": "BLOOD_TYPE",
+                    "label": "Nhóm máu",
+                    "type": "text",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "INSURANCE_NUMBER",
+                    "label": "Số thẻ BHYT",
+                    "type": "text",
+                    "layout": {
+                        "col": 5,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "INSURANCE_PROVIDER",
+                    "label": "Đơn vị cung cấp BHYT",
+                    "type": "text",
+                    "layout": {
+                        "col": 9,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "ALLERGIES",
+                    "label": "Thông tin dị ứng",
+                    "type": "textarea",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 2
+                    }
+                }
+            ]
+        },
+        {
+            "id": "system_info_region",
+            "type": "card",
+            "title": "Thông tin hệ thống",
+            "fields": [
+                {
+                    "name": "STATUS",
+                    "label": "Trạng thái",
+                    "type": "text",
+                    "readOnly": true,
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "CREATED_BY",
+                    "label": "Người tạo",
+                    "type": "text",
+                    "readOnly": true,
+                    "layout": {
+                        "col": 5,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "CREATED_DATE",
+                    "label": "Ngày tạo",
+                    "type": "datetime",
+                    "readOnly": true,
+                    "layout": {
+                        "col": 9,
+                        "colSpan": 4,
+                        "row": 1
+                    }
+                }
+            ]
+        }
+    ],
+    "description": "Form thông tin chi tiết bệnh nhân"
+}

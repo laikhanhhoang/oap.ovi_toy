@@ -1,0 +1,162 @@
+{
+  "dataSource": {
+    "type": "none"
+  },
+  "description": "Trang danh sách bệnh nhân với bộ lọc tìm kiếm",
+  "layout": {
+    "type": "default"
+  },
+  "metadataVersion": 2,
+  "pageCode": "HD_PATIENTS_LIST",
+  "pageType": "form",
+  "regions": [
+    {
+      "collapsible": true,
+      "fields": [
+        {
+          "label": "Mã bệnh nhân",
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1
+          },
+          "name": "f_patient_code",
+          "placeholder": "Nhập mã bệnh nhân...",
+          "type": "text"
+        },
+        {
+          "label": "Họ và tên",
+          "layout": {
+            "col": 4,
+            "colSpan": 3,
+            "row": 1
+          },
+          "name": "f_fullname",
+          "placeholder": "Nhập họ và tên...",
+          "type": "text"
+        },
+        {
+          "label": "Giới tính",
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1
+          },
+          "lov": {
+            "code": "LOV_SEX"
+          },
+          "name": "f_gender",
+          "placeholder": "Tất cả",
+          "showClearButton": true,
+          "type": "select"
+        },
+        {
+          "label": "Số điện thoại",
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1
+          },
+          "name": "f_phone_number",
+          "placeholder": "Nhập số điện thoại...",
+          "type": "text"
+        }
+      ],
+      "id": "filter_region",
+      "title": "Bộ lọc tìm kiếm",
+      "type": "card"
+    },
+    {
+      "fields": [
+        {
+          "layout": {
+            "colSpan": 12
+          },
+          "metadata": {
+            "columnChooser": true,
+            "columns": [
+              {
+                "allowSorting": true,
+                "key": "PATIENT_CODE",
+                "label": "Mã bệnh nhân",
+                "type": "text",
+                "width": 150
+              },
+              {
+                "allowSorting": true,
+                "key": "FULLNAME",
+                "label": "Họ và tên",
+                "minWidth": 200,
+                "type": "text"
+              },
+              {
+                "allowSorting": true,
+                "key": "GENDER",
+                "label": "Giới tính",
+                "lovCode": "LOV_SEX",
+                "type": "select",
+                "width": 120
+              },
+              {
+                "allowSorting": true,
+                "key": "PHONE_NUMBER",
+                "label": "Số điện thoại",
+                "type": "phone",
+                "width": 150
+              },
+              {
+                "allowSorting": true,
+                "key": "INSURANCE_NUMBER",
+                "label": "Số BHYT",
+                "type": "text",
+                "width": 180
+              }
+            ],
+            "dataSource": {
+              "bindVariables": [
+                {
+                  "name": "p_patient_code",
+                  "sourceField": "f_patient_code"
+                },
+                {
+                  "name": "p_fullname",
+                  "sourceField": "f_fullname"
+                },
+                {
+                  "name": "p_gender",
+                  "sourceField": "f_gender"
+                },
+                {
+                  "name": "p_phone_number",
+                  "sourceField": "f_phone_number"
+                }
+              ],
+              "keyField": "PATIENT_ID",
+              "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, INSURANCE_NUMBER FROM DEMO_PATIENTS WHERE (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') ORDER BY PATIENT_ID",
+              "tableName": "DEMO_PATIENTS",
+              "type": "query"
+            },
+            "exportEnabled": true,
+            "filterRow": true,
+            "headerFilter": true,
+            "pageType": "datagrid",
+            "searchPanel": true,
+            "tableConfig": {
+              "filterPanel": true,
+              "height": "450px",
+              "pageSize": 10,
+              "search": true,
+              "selection": "single"
+            }
+          },
+          "name": "grid_patients",
+          "type": "datagrid"
+        }
+      ],
+      "id": "list_region",
+      "title": "Danh sách bệnh nhân",
+      "type": "card"
+    }
+  ],
+  "title": "Danh sách Bệnh nhân"
+}

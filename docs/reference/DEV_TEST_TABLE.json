@@ -32,9 +32,9 @@
                 "minWidth": 220
               },
               {
-                "key": "EXPECTED_VALUE",
-                "type": "number",
+                "dataType": "number",
                 "format": "#,##0",
+                "key": "EXPECTED_VALUE",
                 "width": 150
               },
               {
@@ -42,14 +42,14 @@
                 "width": 70
               },
               {
+                "dataType": "number",
                 "key": "WIN_PROBABILITY",
-                "type": "number",
                 "width": 100
               },
               {
-                "key": "FORECAST_AMOUNT",
-                "type": "number",
+                "dataType": "number",
                 "format": "#,##0",
+                "key": "FORECAST_AMOUNT",
                 "width": 150
               },
               {
@@ -65,12 +65,13 @@
               "keyField": "OPP_ID",
               "query": "SELECT OPP_ID, OPP_CODE, OPP_NAME, EXPECTED_VALUE, CUR_CODE, WIN_PROBABILITY, FORECAST_AMOUNT, SALES_STAGE, STATUS FROM ERP.OPPORTUNITIES ORDER BY OPP_CODE",
               "tableName": "OPPORTUNITIES",
-              "type": "query"
+              "type": "sql"
             },
-            "pageType": "datagrid",
-            "filterRow": true,
+            "pageType": "table",
             "tableConfig": {
-              "height": "calc(100vh - 180px)"
+              "filterRow": true,
+              "height": "calc(100vh - 180px)",
+              "keyField": "OPP_ID"
             }
           },
           "name": "grid_opp",

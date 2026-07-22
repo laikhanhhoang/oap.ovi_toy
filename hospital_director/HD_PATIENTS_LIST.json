@@ -174,7 +174,7 @@
                                 "allowSorting": true,
                                 "modalConfig": {
                                     "keyField": "PATIENT_ID",
-                                    "pageCode": "HD_PATIENT_FORM",
+                                    "pageCode": "HD_PATIENT_DETAIL",
                                     "size": "xl",
                                     "title": "Thông tin chi tiết bệnh nhân"
                                 }

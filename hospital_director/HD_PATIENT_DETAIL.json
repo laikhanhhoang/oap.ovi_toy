@@ -1,6 +1,6 @@
 {
     "metadataVersion": 2,
-    "pageCode": "HD_PATIENT_FORM",
+    "pageCode": "HD_PATIENT_DETAIL",
     "pageType": "form",
     "title": "Thông tin chi tiết Bệnh nhân",
     "description": "Form thông tin chi tiết bệnh nhân",
@@ -11,7 +11,7 @@
         "params": [
             { "name": "id", "sourceType": "url", "sourceField": "id" }
         ],
-        "saveQuery": "BEGIN\n  UPDATE DEMO_PATIENTS\n     SET PATIENT_CODE       = :p_patient_code,\n         FIRST_NAME         = :p_first_name,\n         LAST_NAME          = :p_last_name,\n         DATE_OF_BIRTH      = CASE \n                                WHEN :p_date_of_birth IS NULL OR :p_date_of_birth = '' THEN NULL\n                                WHEN REGEXP_LIKE(:p_date_of_birth, '^\\d{2}/\\d{2}/\\d{4}') THEN TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'DD/MM/YYYY')\n                                WHEN REGEXP_LIKE(:p_date_of_birth, '^\\d{4}-\\d{2}-\\d{2}') THEN TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'YYYY-MM-DD')\n                                ELSE NULL\n                              END,\n         GENDER             = :p_gender,\n         PHONE_NUMBER       = :p_phone_number,\n         EMAIL              = :p_email,\n         ADDRESS            = :p_address,\n         IDENTITY_NUMBER    = :p_identity_number,\n         BLOOD_TYPE         = :p_blood_type,\n         ALLERGIES          = :p_allergies,\n         INSURANCE_NUMBER   = :p_insurance_number,\n         INSURANCE_PROVIDER = :p_insurance_provider\n   WHERE PATIENT_ID = COALESCE(:p_patient_id, :id);\nEND;"
+        "saveQuery": "DECLARE\n  v_dob DATE;\nBEGIN\n  IF :p_date_of_birth IS NOT NULL AND :p_date_of_birth != '' THEN\n    IF REGEXP_LIKE(:p_date_of_birth, '^\\d{4}-\\d{2}-\\d{2}') THEN\n      v_dob := TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'YYYY-MM-DD');\n    ELSIF REGEXP_LIKE(:p_date_of_birth, '^\\d{2}/\\d{2}/\\d{4}') THEN\n      v_dob := TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'DD/MM/YYYY');\n    ELSIF REGEXP_LIKE(:p_date_of_birth, '^\\d{4}/\\d{2}/\\d{2}') THEN\n      v_dob := TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'YYYY/MM/DD');\n    END IF;\n  END IF;\n\n  UPDATE DEMO_PATIENTS\n     SET PATIENT_CODE       = :p_patient_code,\n         FIRST_NAME         = :p_first_name,\n         LAST_NAME          = :p_last_name,\n         DATE_OF_BIRTH      = NVL(v_dob, DATE_OF_BIRTH),\n         GENDER             = :p_gender,\n         PHONE_NUMBER       = :p_phone_number,\n         EMAIL              = :p_email,\n         ADDRESS            = :p_address,\n         IDENTITY_NUMBER    = :p_identity_number,\n         BLOOD_TYPE         = :p_blood_type,\n         ALLERGIES          = :p_allergies,\n         INSURANCE_NUMBER   = :p_insurance_number,\n         INSURANCE_PROVIDER = :p_insurance_provider\n   WHERE PATIENT_ID = COALESCE(:p_patient_id, :id);\nEND;"
     },
     "layout": {
         "type": "splitter",
@@ -101,7 +101,7 @@
                     "layout": { "col": 10, "colSpan": 3, "row": 1 }
                 },
                 {
-                    "name": "DATE_OF_BIRTH", "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy",
+                    "name": "DATE_OF_BIRTH", "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy", "required": true,
                     "layout": { "col": 1, "colSpan": 4, "row": 2 }
                 },
                 {
@@ -121,7 +121,7 @@
             "title": "Thông tin liên hệ",
             "fields": [
                 {
-                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone",
+                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone", "required": true,
                     "layout": { "col": 1, "colSpan": 6, "row": 1 }
                 },
                 {

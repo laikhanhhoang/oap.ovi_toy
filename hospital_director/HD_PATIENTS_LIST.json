@@ -164,6 +164,8 @@
                             "selection": "single"
                         },
                         "columns": [
+                            {"key": "PATIENT_ID", "label": "Mã hệ thống bệnh nhân", "visible": false
+                            },
                             {
                                 "key": "PATIENT_CODE",
                                 "label": "Mã bệnh nhân",

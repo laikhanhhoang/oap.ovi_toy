@@ -13,11 +13,35 @@
     "layout": {
         "type": "single"
     },
+    "tabs": [
+        {
+            "id": "tab_general",
+            "label": "Thông tin chung",
+            "regionIds": [
+                "personal_info_region",
+                "contact_info_region"
+            ]
+        },
+        {
+            "id": "tab_medical",
+            "label": "Thông tin y tế & Bảo hiểm",
+            "regionIds": [
+                "medical_info_region"
+            ]
+        },
+        {
+            "id": "tab_system",
+            "label": "Thông tin hệ thống",
+            "regionIds": [
+                "system_info_region"
+            ]
+        }
+    ],
     "regions": [
         {
-            "id": "code_region",
+            "id": "personal_info_region",
             "type": "card",
-            "title": "Mã định danh bệnh nhân",
+            "title": "Thông tin định danh",
             "fields": [
                 {
                     "name": "PATIENT_CODE",
@@ -26,25 +50,18 @@
                     "required": true,
                     "layout": {
                         "col": 1,
-                        "colSpan": 12,
+                        "colSpan": 4,
                         "row": 1
                     }
-                }
-            ]
-        },
-        {
-            "id": "general_info_region",
-            "type": "card",
-            "title": "Thông tin chung bệnh nhân",
-            "fields": [
+                },
                 {
                     "name": "FIRST_NAME",
                     "label": "Họ và tên đệm",
                     "type": "text",
                     "required": true,
                     "layout": {
-                        "col": 1,
-                        "colSpan": 6,
+                        "col": 5,
+                        "colSpan": 4,
                         "row": 1
                     }
                 },
@@ -54,8 +71,8 @@
                     "type": "text",
                     "required": true,
                     "layout": {
-                        "col": 7,
-                        "colSpan": 6,
+                        "col": 9,
+                        "colSpan": 4,
                         "row": 1
                     }
                 },
@@ -92,7 +109,14 @@
                         "colSpan": 4,
                         "row": 2
                     }
-                },
+                }
+            ]
+        },
+        {
+            "id": "contact_info_region",
+            "type": "card",
+            "title": "Thông tin liên hệ",
+            "fields": [
                 {
                     "name": "PHONE_NUMBER",
                     "label": "Số điện thoại",
@@ -100,7 +124,7 @@
                     "layout": {
                         "col": 1,
                         "colSpan": 6,
-                        "row": 3
+                        "row": 1
                     }
                 },
                 {
@@ -110,7 +134,7 @@
                     "layout": {
                         "col": 7,
                         "colSpan": 6,
-                        "row": 3
+                        "row": 1
                     }
                 },
                 {
@@ -120,7 +144,7 @@
                     "layout": {
                         "col": 1,
                         "colSpan": 12,
-                        "row": 4
+                        "row": 2
                     }
                 }
             ]

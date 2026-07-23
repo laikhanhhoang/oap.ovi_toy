@@ -3,6 +3,7 @@
     "pageCode": "HD_PATIENTS_LIST",
     "pageType": "form",
     "title": "Danh sách Bệnh nhân",
+    "description": "Trang danh sách bệnh nhân với bộ lọc bên trái và datagrid bên phải có nút Thêm bệnh nhân mới ở thanh công cụ datagrid",
     "dataSource": {
         "type": "none"
     },
@@ -118,12 +119,29 @@
                     },
                     "metadata": {
                         "pageType": "datagrid",
+                        "filterRegionId": "filter_region",
                         "height": "calc(100vh - 180px)",
                         "filterRow": true,
                         "searchPanel": true,
                         "headerFilter": true,
                         "columnChooser": true,
                         "exportEnabled": true,
+                        "toolbar": [
+                            {
+                                "name": "btn_create_patient",
+                                "label": "Thêm bệnh nhân mới",
+                                "icon": "plus",
+                                "type": "create",
+                                "stylingMode": "contained",
+                                "variant": "success",
+                                "modalConfig": {
+                                    "pageCode": "HD_PATIENT_FORM",
+                                    "size": "xl",
+                                    "title": "Thêm mới bệnh nhân",
+                                    "refreshOnClose": true
+                                }
+                            }
+                        ],
                         "dataSource": {
                             "type": "query",
                             "tableName": "DEMO_PATIENTS",
@@ -154,7 +172,7 @@
                                     "sourceField": "f_allergies"
                                 }
                             ],
-                            "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, BLOOD_TYPE, ALLERGIES FROM DEMO_PATIENTS WHERE (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') AND (:p_blood_type IS NULL OR LOWER(BLOOD_TYPE) LIKE LOWER('%'||:p_blood_type||'%')) AND (:p_allergies IS NULL OR LOWER(ALLERGIES) LIKE LOWER('%'||:p_allergies||'%')) ORDER BY PATIENT_ID"
+                            "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, BLOOD_TYPE, ALLERGIES FROM DEMO_PATIENTS WHERE (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') AND (:p_blood_type IS NULL OR LOWER(BLOOD_TYPE) LIKE LOWER('%'||:p_blood_type||'%')) AND (:p_allergies IS NULL OR LOWER(ALLERGIES) LIKE LOWER('%'||:p_allergies||'%')) ORDER BY PATIENT_ID DESC"
                         },
                         "tableConfig": {
                             "height": "calc(100vh - 220px)",
@@ -164,7 +182,10 @@
                             "selection": "single"
                         },
                         "columns": [
-                            {"key": "PATIENT_ID", "label": "Mã hệ thống bệnh nhân", "visible": false
+                            {
+                                "key": "PATIENT_ID",
+                                "label": "Mã hệ thống bệnh nhân",
+                                "visible": false
                             },
                             {
                                 "key": "PATIENT_CODE",
@@ -221,6 +242,5 @@
                 }
             ]
         }
-    ],
-    "description": "Trang danh sách bệnh nhân với bố cục splitter (bộ lọc bên trái, danh sách bên phải)"
+    ]
 }

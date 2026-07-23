@@ -2,8 +2,8 @@
     "metadataVersion": 2,
     "pageCode": "HD_PATIENT_FORM",
     "pageType": "form",
-    "title": "Thông tin chi tiết Bệnh nhân",
-    "description": "Form thông tin chi tiết bệnh nhân",
+    "title": "Tạo mới Bệnh nhân",
+    "description": "Form thêm mới bệnh nhân",
     "dataSource": {
         "type": "query",
         "keyField": "PATIENT_ID",
@@ -11,46 +11,19 @@
         "params": [
             { "name": "id", "sourceType": "url", "sourceField": "id" }
         ],
-        "saveQuery": "BEGIN\n  UPDATE DEMO_PATIENTS\n     SET PATIENT_CODE       = :p_patient_code,\n         FIRST_NAME         = :p_first_name,\n         LAST_NAME          = :p_last_name,\n         DATE_OF_BIRTH      = CASE \n                                WHEN :p_date_of_birth IS NULL OR :p_date_of_birth = '' THEN NULL\n                                WHEN REGEXP_LIKE(:p_date_of_birth, '^\\d{2}/\\d{2}/\\d{4}') THEN TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'DD/MM/YYYY')\n                                WHEN REGEXP_LIKE(:p_date_of_birth, '^\\d{4}-\\d{2}-\\d{2}') THEN TO_DATE(SUBSTR(:p_date_of_birth, 1, 10), 'YYYY-MM-DD')\n                                ELSE NULL\n                              END,\n         GENDER             = :p_gender,\n         PHONE_NUMBER       = :p_phone_number,\n         EMAIL              = :p_email,\n         ADDRESS            = :p_address,\n         IDENTITY_NUMBER    = :p_identity_number,\n         BLOOD_TYPE         = :p_blood_type,\n         ALLERGIES          = :p_allergies,\n         INSURANCE_NUMBER   = :p_insurance_number,\n         INSURANCE_PROVIDER = :p_insurance_provider\n   WHERE PATIENT_ID = COALESCE(:p_patient_id, :id);\nEND;"
+        "saveQuery": "DECLARE\n  v_dob DATE;\n  v_str VARCHAR2(100) := TRIM(:p_date_of_birth);\n  v_patient_id VARCHAR2(50) := :p_patient_id;\n  v_gender VARCHAR2(20) := :p_gender;\nBEGIN\n  IF v_str IS NOT NULL THEN\n    IF REGEXP_LIKE(v_str, '^\\d{4}[-/]\\d{2}[-/]\\d{2}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 5, 1) = '/' THEN 'YYYY/MM/DD' ELSE 'YYYY-MM-DD' END);\n    ELSIF REGEXP_LIKE(v_str, '^\\d{2}[-/]\\d{2}[-/]\\d{4}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 3, 1) = '/' THEN 'DD/MM/YYYY' ELSE 'DD-MM-YYYY' END);\n    ELSE\n      BEGIN\n        v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'YYYY-MM-DD');\n      EXCEPTION WHEN OTHERS THEN\n        BEGIN\n          v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'DD/MM/YYYY');\n        EXCEPTION WHEN OTHERS THEN\n          v_dob := NULL;\n        END;\n      END;\n    END IF;\n  END IF;\n\n  v_dob := NVL(v_dob, TRUNC(SYSDATE));\n\n  IF v_gender IN ('MALE', 'Nam', 'M') THEN v_gender := 'M';\n  ELSIF v_gender IN ('FEMALE', 'Nữ', 'F') THEN v_gender := 'F';\n  ELSIF v_gender IS NOT NULL THEN v_gender := 'O';\n  END IF;\n\n  IF v_patient_id IS NULL OR v_patient_id = '' THEN\n    SELECT TO_CHAR(DEMO_PATIENTS_SEQ.NEXTVAL) INTO v_patient_id FROM DUAL;\n    INSERT INTO DEMO_PATIENTS (\n      PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH,\n      GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER,\n      BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER,\n      STATUS, CREATED_BY, CREATED_DATE\n    ) VALUES (\n      v_patient_id, :p_patient_code, :p_first_name, :p_last_name,\n      v_dob, v_gender, :p_phone_number, :p_email, :p_address, :p_identity_number,\n      :p_blood_type, :p_allergies, :p_insurance_number, :p_insurance_provider,\n      NVL(:p_status, 'ACTIVE'), NVL(:p_created_by, USER), SYSDATE\n    );\n  ELSE\n    UPDATE DEMO_PATIENTS\n       SET PATIENT_CODE       = :p_patient_code,\n           FIRST_NAME         = :p_first_name,\n           LAST_NAME          = :p_last_name,\n           DATE_OF_BIRTH      = NVL(v_dob, DATE_OF_BIRTH),\n           GENDER             = v_gender,\n           PHONE_NUMBER       = :p_phone_number,\n           EMAIL              = :p_email,\n           ADDRESS            = :p_address,\n           IDENTITY_NUMBER    = :p_identity_number,\n           BLOOD_TYPE         = :p_blood_type,\n           ALLERGIES          = :p_allergies,\n           INSURANCE_NUMBER   = :p_insurance_number,\n           INSURANCE_PROVIDER = :p_insurance_provider\n     WHERE PATIENT_ID = v_patient_id;\n  END IF;\n  :p_patient_id_out := v_patient_id;\nEND;",
+        "outParams": ["p_patient_id_out"]
     },
     "layout": {
-        "type": "splitter",
         "panes": [
             {
                 "id": "main_pane",
                 "regionIds": [
                     "toolbar_reg",
-                    "tabs:form_tabs"
-                ],
-                "width": "auto"
-            }
-        ],
-        "tabGroups": [
-            {
-                "id": "form_tabs",
-                "tabs": [
-                    {
-                        "id": "tab_general",
-                        "label": "Thông tin chung",
-                        "regionIds": [
-                            "personal_info_region",
-                            "contact_info_region"
-                        ]
-                    },
-                    {
-                        "id": "tab_medical",
-                        "label": "Thông tin y tế & Bảo hiểm",
-                        "regionIds": [
-                            "medical_info_region"
-                        ]
-                    },
-                    {
-                        "id": "tab_system",
-                        "label": "Thông tin hệ thống",
-                        "regionIds": [
-                            "system_info_region"
-                        ]
-                    }
+                    "personal_info_region",
+                    "contact_info_region",
+                    "medical_info_region",
+                    "system_info_region"
                 ]
             }
         ]
@@ -85,23 +58,19 @@
             "title": "Thông tin định danh",
             "fields": [
                 {
-                    "name": "PATIENT_ID", "label": "ID Bệnh nhân", "type": "text", "readOnly": true,
-                    "layout": { "col": 1, "colSpan": 3, "row": 1 }
-                },
-                {
                     "name": "PATIENT_CODE", "label": "Mã bệnh nhân", "type": "text", "required": true,
-                    "layout": { "col": 4, "colSpan": 3, "row": 1 }
+                    "layout": { "col": 1, "colSpan": 4, "row": 1 }
                 },
                 {
                     "name": "FIRST_NAME", "label": "Họ và tên đệm", "type": "text", "required": true,
-                    "layout": { "col": 7, "colSpan": 3, "row": 1 }
+                    "layout": { "col": 5, "colSpan": 4, "row": 1 }
                 },
                 {
                     "name": "LAST_NAME", "label": "Tên", "type": "text", "required": true,
-                    "layout": { "col": 10, "colSpan": 3, "row": 1 }
+                    "layout": { "col": 9, "colSpan": 4, "row": 1 }
                 },
                 {
-                    "name": "DATE_OF_BIRTH", "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy",
+                    "name": "DATE_OF_BIRTH", "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy", "required": true,
                     "layout": { "col": 1, "colSpan": 4, "row": 2 }
                 },
                 {
@@ -121,7 +90,7 @@
             "title": "Thông tin liên hệ",
             "fields": [
                 {
-                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone",
+                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone", "required": true,
                     "layout": { "col": 1, "colSpan": 6, "row": 1 }
                 },
                 {

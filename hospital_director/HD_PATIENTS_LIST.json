@@ -119,7 +119,6 @@
                             "name": "btn_create_patient",
                             "label": "Thêm bệnh nhân mới",
                             "icon": "plus",
-                            "type": "create",
                             "stylingMode": "contained",
                             "variant": "success",
                             "location": "after",
@@ -273,14 +272,10 @@
             "sourceComponent": "delete_selected_patients",
             "actions": [
                 {
-                    "type": "showMessage",
-                    "messageType": "info",
-                    "message": "Các ID đã chọn: {{grid_patients_SELECTED}}"
-                },
-                {
                     "type": "abort",
                     "condition": "typeof grid_patients_SELECTED === 'undefined' || !grid_patients_SELECTED",
-                    "message": "Vui lòng chọn ít nhất một bệnh nhân để xóa."
+                    "message": "Vui lòng chọn ít nhất một bệnh nhân để xóa.",
+                    "dummy": "{{grid_patients_SELECTED}}"
                 },
                 {
                     "type": "confirm",

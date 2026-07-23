@@ -100,15 +100,15 @@
                     "layout": { "col": 1, "colSpan": 3, "row": 1 }
                 },
                 {
-                    "name": "PATIENT_CODE", "label": "Mã bệnh nhân", "type": "text", "required": true,
+                    "name": "PATIENT_CODE", "label": "Mã bệnh nhân", "type": "text", "required": true, "readOnly": true,
                     "layout": { "col": 4, "colSpan": 3, "row": 1 }
                 },
                 {
-                    "name": "FIRST_NAME", "label": "Họ và tên đệm", "type": "text", "required": true,
+                    "name": "FIRST_NAME", "label": "Họ và tên đệm", "type": "text", "required": true, "readOnly": true,
                     "layout": { "col": 7, "colSpan": 3, "row": 1 }
                 },
                 {
-                    "name": "LAST_NAME", "label": "Tên", "type": "text", "required": true,
+                    "name": "LAST_NAME", "label": "Tên", "type": "text", "required": true, "readOnly": true,
                     "layout": { "col": 10, "colSpan": 3, "row": 1 }
                 },
                 {
@@ -132,7 +132,7 @@
             "title": "Thông tin liên hệ",
             "fields": [
                 {
-                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone", "required": true,
+                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone", "required": true,"readOnly": true,
                     "layout": { "col": 1, "colSpan": 6, "row": 1 }
                 },
                 {

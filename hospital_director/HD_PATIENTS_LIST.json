@@ -22,6 +22,7 @@
             {
                 "id": "list_center",
                 "regionIds": [
+                    "toolbar_reg",
                     "list_region"
                 ],
                 "size": "1fr"
@@ -107,6 +108,43 @@
             ]
         },
         {
+            "id": "toolbar_reg",
+            "type": "plain",
+            "fields": [
+                {
+                    "name": "main_toolbar",
+                    "type": "dx-toolbar",
+                    "items": [
+                        {
+                            "name": "btn_create_patient",
+                            "label": "Thêm bệnh nhân mới",
+                            "icon": "plus",
+                            "type": "create",
+                            "stylingMode": "contained",
+                            "variant": "success",
+                            "location": "after",
+                            "modalConfig": {
+                                "pageCode": "HD_PATIENT_FORM",
+                                "size": "xl",
+                                "title": "Thêm mới bệnh nhân",
+                                "refreshOnClose": true
+                            }
+                        },
+                        {
+                            "name": "btn_delete_selected",
+                            "label": "Xóa bệnh nhân đã chọn",
+                            "icon": "trash",
+                            "type": "custom",
+                            "action": "delete_selected_patients",
+                            "stylingMode": "outlined",
+                            "variant": "danger",
+                            "location": "after"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "list_region",
             "type": "card",
             "title": "Danh sách bệnh nhân",
@@ -126,22 +164,6 @@
                         "headerFilter": true,
                         "columnChooser": true,
                         "exportEnabled": true,
-                        "toolbar": [
-                            {
-                                "name": "btn_create_patient",
-                                "label": "Thêm bệnh nhân mới",
-                                "icon": "plus",
-                                "type": "create",
-                                "stylingMode": "contained",
-                                "variant": "success",
-                                "modalConfig": {
-                                    "pageCode": "HD_PATIENT_FORM",
-                                    "size": "xl",
-                                    "title": "Thêm mới bệnh nhân",
-                                    "refreshOnClose": true
-                                }
-                            }
-                        ],
                         "dataSource": {
                             "type": "query",
                             "tableName": "DEMO_PATIENTS",
@@ -172,14 +194,14 @@
                                     "sourceField": "f_allergies"
                                 }
                             ],
-                            "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, BLOOD_TYPE, ALLERGIES FROM DEMO_PATIENTS WHERE (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') AND (:p_blood_type IS NULL OR LOWER(BLOOD_TYPE) LIKE LOWER('%'||:p_blood_type||'%')) AND (:p_allergies IS NULL OR LOWER(ALLERGIES) LIKE LOWER('%'||:p_allergies||'%')) ORDER BY PATIENT_ID DESC"
+                            "query": "SELECT PATIENT_ID, PATIENT_CODE, (FIRST_NAME || ' ' || LAST_NAME) AS FULLNAME, GENDER, PHONE_NUMBER, BLOOD_TYPE, ALLERGIES FROM DEMO_PATIENTS WHERE NVL(IS_DELETED, 0) = 0 AND (:p_patient_code IS NULL OR LOWER(PATIENT_CODE) LIKE LOWER('%'||:p_patient_code||'%')) AND (:p_fullname IS NULL OR LOWER(FIRST_NAME || ' ' || LAST_NAME) LIKE LOWER('%'||:p_fullname||'%')) AND (:p_gender IS NULL OR GENDER = :p_gender) AND (:p_phone_number IS NULL OR PHONE_NUMBER LIKE '%'||:p_phone_number||'%') AND (:p_blood_type IS NULL OR LOWER(BLOOD_TYPE) LIKE LOWER('%'||:p_blood_type||'%')) AND (:p_allergies IS NULL OR LOWER(ALLERGIES) LIKE LOWER('%'||:p_allergies||'%')) ORDER BY PATIENT_ID DESC"
                         },
                         "tableConfig": {
                             "height": "calc(100vh - 220px)",
                             "pageSize": 15,
                             "search": true,
                             "filterPanel": true,
-                            "selection": "single"
+                            "selection": "multiple"
                         },
                         "columns": [
                             {
@@ -197,7 +219,8 @@
                                     "keyField": "PATIENT_ID",
                                     "pageCode": "HD_PATIENT_DETAIL",
                                     "size": "xl",
-                                    "title": "Thông tin chi tiết bệnh nhân"
+                                    "title": "Thông tin chi tiết bệnh nhân",
+                                    "refreshOnClose": true
                                 }
                             },
                             {
@@ -239,6 +262,60 @@
                             }
                         ]
                     }
+                }
+            ]
+        }
+    ],
+    "pageEvents": [
+        {
+            "name": "delete_selected_patients",
+            "trigger": "onCustomAction",
+            "sourceComponent": "delete_selected_patients",
+            "actions": [
+                {
+                    "type": "showMessage",
+                    "messageType": "info",
+                    "message": "Các ID đã chọn: {{grid_patients_SELECTED}}"
+                },
+                {
+                    "type": "abort",
+                    "condition": "typeof grid_patients_SELECTED === 'undefined' || !grid_patients_SELECTED",
+                    "message": "Vui lòng chọn ít nhất một bệnh nhân để xóa."
+                },
+                {
+                    "type": "confirm",
+                    "message": "Bạn có chắc chắn muốn xóa các bệnh nhân đã chọn không?"
+                },
+                {
+                    "type": "command",
+                    "commandMode": "plsql",
+                    "query": "DECLARE v_ids VARCHAR2(4000) := :p_ids; BEGIN UPDATE DEMO_PATIENTS SET IS_DELETED = 1 WHERE PATIENT_ID IN (SELECT regexp_substr(v_ids, '[^,]+', 1, level) FROM dual CONNECT BY regexp_substr(v_ids, '[^,]+', 1, level) IS NOT NULL); END;",
+                    "body": {
+                        "bindVariables": [
+                            {
+                                "name": "p_ids",
+                                "value": "{{grid_patients_SELECTED}}"
+                            }
+                        ]
+                    },
+                    "onResult": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "success",
+                            "message": "Đã xóa các bệnh nhân đã chọn thành công!"
+                        },
+                        {
+                            "type": "refreshRegion",
+                            "target": "list_region"
+                        }
+                    ],
+                    "onError": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "error",
+                            "message": "Lỗi xảy ra khi xóa bệnh nhân."
+                        }
+                    ]
                 }
             ]
         }

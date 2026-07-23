@@ -7,7 +7,8 @@
     "dataSource": {
         "type": "query",
         "keyField": "PATIENT_ID",
-        "loadQuery": "SELECT PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER, BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id",
+        "tableName": "DEMO_PATIENTS",
+        "loadQuery": "SELECT PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER, BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id AND NVL(IS_DELETED, 0) = 0",
         "params": [
             { "name": "id", "sourceType": "url", "sourceField": "id" }
         ],
@@ -65,6 +66,16 @@
                     "type": "dx-toolbar",
                     "breadcrumb": true,
                     "items": [
+                        {
+                            "name": "btn_soft_delete",
+                            "label": "Xóa bệnh nhân",
+                            "icon": "trash",
+                            "type": "custom",
+                            "action": "delete_patient",
+                            "stylingMode": "outlined",
+                            "variant": "danger",
+                            "location": "after"
+                        },
                         {
                             "name": "btn_save",
                             "label": "Lưu thông tin",
@@ -178,6 +189,50 @@
                 {
                     "name": "CREATED_DATE", "label": "Ngày tạo", "type": "datetime", "readOnly": true,
                     "layout": { "col": 9, "colSpan": 4, "row": 1 }
+                }
+            ]
+        }
+    ],
+    "pageEvents": [
+        {
+            "name": "delete_patient_event",
+            "trigger": "onCustomAction",
+            "sourceComponent": "delete_patient",
+            "actions": [
+                {
+                    "type": "confirm",
+                    "message": "Bạn có chắc chắn muốn xóa bệnh nhân này không?"
+                },
+                {
+                    "type": "command",
+                    "commandMode": "plsql",
+                    "query": "BEGIN UPDATE DEMO_PATIENTS SET IS_DELETED = 1 WHERE PATIENT_ID = :p_patient_id; END;",
+                    "body": {
+                        "bindVariables": [
+                            {
+                                "name": "p_patient_id",
+                                "value": "{{PATIENT_ID}}"
+                            }
+                        ]
+                    },
+                    "onResult": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "success",
+                            "message": "Đã xóa bệnh nhân thành công!"
+                        },
+                        {
+                            "type": "navigate",
+                            "url": "/page/HD_PATIENTS_LIST"
+                        }
+                    ],
+                    "onError": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "error",
+                            "message": "Có lỗi xảy ra khi xóa bệnh nhân."
+                        }
+                    ]
                 }
             ]
         }

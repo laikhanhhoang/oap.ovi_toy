@@ -275,7 +275,7 @@
                     "type": "abort",
                     "condition": "typeof grid_patients_SELECTED === 'undefined' || !grid_patients_SELECTED",
                     "message": "Vui lòng chọn ít nhất một bệnh nhân để xóa.",
-                    "dummy": "{{grid_patients_SELECTED}}"
+                    "preload": "{{grid_patients_SELECTED}}"
                 },
                 {
                     "type": "confirm",

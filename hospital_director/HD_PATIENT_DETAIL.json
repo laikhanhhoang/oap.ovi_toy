@@ -1,240 +1,369 @@
 {
-    "metadataVersion": 2,
-    "pageCode": "HD_PATIENT_DETAIL",
-    "pageType": "form",
-    "title": "Thông tin chi tiết Bệnh nhân",
-    "description": "Form thông tin chi tiết bệnh nhân",
-    "dataSource": {
-        "type": "query",
-        "keyField": "PATIENT_ID",
-        "tableName": "DEMO_PATIENTS",
-        "loadQuery": "SELECT PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER, BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id AND NVL(IS_DELETED, 0) = 0",
-        "params": [
-            { "name": "id", "sourceType": "url", "sourceField": "id" }
-        ],
-        "saveQuery": "DECLARE\n  v_dob DATE;\n  v_str VARCHAR2(100) := TRIM(:p_date_of_birth);\n  v_gender VARCHAR2(20) := :p_gender;\nBEGIN\n  IF v_str IS NOT NULL THEN\n    IF REGEXP_LIKE(v_str, '^\\d{4}[-/]\\d{2}[-/]\\d{2}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 5, 1) = '/' THEN 'YYYY/MM/DD' ELSE 'YYYY-MM-DD' END);\n    ELSIF REGEXP_LIKE(v_str, '^\\d{2}[-/]\\d{2}[-/]\\d{4}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 3, 1) = '/' THEN 'DD/MM/YYYY' ELSE 'DD-MM-YYYY' END);\n    ELSE\n      BEGIN\n        v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'YYYY-MM-DD');\n      EXCEPTION WHEN OTHERS THEN\n        BEGIN\n          v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'DD/MM/YYYY');\n        EXCEPTION WHEN OTHERS THEN\n          v_dob := NULL;\n        END;\n      END;\n    END IF;\n  END IF;\n\n  IF v_gender IN ('MALE', 'Nam', 'M') THEN v_gender := 'M';\n  ELSIF v_gender IN ('FEMALE', 'Nữ', 'F') THEN v_gender := 'F';\n  ELSIF v_gender IS NOT NULL THEN v_gender := 'O';\n  END IF;\n\n  UPDATE DEMO_PATIENTS\n     SET PATIENT_CODE       = :p_patient_code,\n         FIRST_NAME         = :p_first_name,\n         LAST_NAME          = :p_last_name,\n         DATE_OF_BIRTH      = NVL(v_dob, DATE_OF_BIRTH),\n         GENDER             = v_gender,\n         PHONE_NUMBER       = :p_phone_number,\n         EMAIL              = :p_email,\n         ADDRESS            = :p_address,\n         IDENTITY_NUMBER    = :p_identity_number,\n         BLOOD_TYPE         = :p_blood_type,\n         ALLERGIES          = :p_allergies,\n         INSURANCE_NUMBER   = :p_insurance_number,\n         INSURANCE_PROVIDER = :p_insurance_provider,\n         STATUS             = NVL(:p_status, STATUS)\n   WHERE PATIENT_ID = COALESCE(:p_patient_id, :id);\nEND;"
-    },
-    "layout": {
-        "type": "splitter",
-        "panes": [
-            {
-                "id": "main_pane",
-                "regionIds": [
-                    "toolbar_reg",
-                    "tabs:form_tabs"
-                ],
-                "width": "auto"
-            }
-        ],
-        "tabGroups": [
-            {
-                "id": "form_tabs",
-                "tabs": [
-                    {
-                        "id": "tab_general",
-                        "label": "Thông tin chung",
-                        "regionIds": [
-                            "personal_info_region",
-                            "contact_info_region"
-                        ]
-                    },
-                    {
-                        "id": "tab_medical",
-                        "label": "Thông tin y tế & Bảo hiểm",
-                        "regionIds": [
-                            "medical_info_region"
-                        ]
-                    },
-                    {
-                        "id": "tab_system",
-                        "label": "Thông tin hệ thống",
-                        "regionIds": [
-                            "system_info_region"
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    "regions": [
-        {
-            "id": "toolbar_reg",
-            "type": "plain",
-            "fields": [
-                {
-                    "name": "main_toolbar",
-                    "type": "dx-toolbar",
-                    "breadcrumb": true,
-                    "items": [
-                        {
-                            "name": "btn_soft_delete",
-                            "label": "Xóa bệnh nhân",
-                            "icon": "trash",
-                            "type": "custom",
-                            "action": "delete_patient",
-                            "stylingMode": "outlined",
-                            "variant": "danger",
-                            "location": "after"
-                        },
-                        {
-                            "name": "btn_save",
-                            "label": "Lưu thông tin",
-                            "icon": "save",
-                            "type": "submit",
-                            "action": "save",
-                            "stylingMode": "contained",
-                            "variant": "primary",
-                            "location": "after"
-                        }
-                    ]
-                }
-            ]
-        },
-        {   
-            "id": "personal_info_region",
-            "type": "card",
-            "title": "Thông tin định danh",
-            "fields": [
-                {
-                    "name": "PATIENT_ID", "label": "ID Bệnh nhân", "type": "text", "readOnly": true,
-                    "layout": { "col": 1, "colSpan": 3, "row": 1 }
-                },
-                {
-                    "name": "PATIENT_CODE", "label": "Mã bệnh nhân", "type": "text", "required": true, "readOnly": true,
-                    "layout": { "col": 4, "colSpan": 3, "row": 1 }
-                },
-                {
-                    "name": "FIRST_NAME", "label": "Họ và tên đệm", "type": "text", "required": true, "readOnly": true,
-                    "layout": { "col": 7, "colSpan": 3, "row": 1 }
-                },
-                {
-                    "name": "LAST_NAME", "label": "Tên", "type": "text", "required": true, "readOnly": true,
-                    "layout": { "col": 10, "colSpan": 3, "row": 1 }
-                },
-                {
-                    "name": "DATE_OF_BIRTH", "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy", "required": true,
-                    "layout": { "col": 1, "colSpan": 4, "row": 2 }
-                },
-                {
-                    "name": "GENDER", "label": "Giới tính", "type": "select",
-                    "lov": { "code": "LOV_SEX" },
-                    "layout": { "col": 5, "colSpan": 4, "row": 2 }
-                },
-                {
-                    "name": "IDENTITY_NUMBER", "label": "Số CMND / CCCD", "type": "text",
-                    "layout": { "col": 9, "colSpan": 4, "row": 2 }
-                }
-            ]
-        },
-        {
-            "id": "contact_info_region",
-            "type": "card",
-            "title": "Thông tin liên hệ",
-            "fields": [
-                {
-                    "name": "PHONE_NUMBER", "label": "Số điện thoại", "type": "phone", "required": true,"readOnly": true,
-                    "layout": { "col": 1, "colSpan": 6, "row": 1 }
-                },
-                {
-                    "name": "EMAIL", "label": "Email", "type": "email",
-                    "layout": { "col": 7, "colSpan": 6, "row": 1 }
-                },
-                {
-                    "name": "ADDRESS", "label": "Địa chỉ", "type": "textarea",
-                    "layout": { "col": 1, "colSpan": 12, "row": 2 }
-                }
-            ]
-        },
-        {
-            "id": "medical_info_region",
-            "type": "card",
-            "title": "Thông tin y tế & bảo hiểm",
-            "fields": [
-                {
-                    "name": "BLOOD_TYPE", "label": "Nhóm máu", "type": "text",
-                    "layout": { "col": 1, "colSpan": 4, "row": 1 }
-                },
-                {
-                    "name": "INSURANCE_NUMBER", "label": "Số thẻ BHYT", "type": "text",
-                    "layout": { "col": 5, "colSpan": 4, "row": 1 }
-                },
-                {
-                    "name": "INSURANCE_PROVIDER", "label": "Đơn vị cung cấp BHYT", "type": "text",
-                    "layout": { "col": 9, "colSpan": 4, "row": 1 }
-                },
-                {
-                    "name": "ALLERGIES", "label": "Thông tin dị ứng", "type": "textarea",
-                    "layout": { "col": 1, "colSpan": 12, "row": 2 }
-                }
-            ]
-        },
-        {
-            "id": "system_info_region",
-            "type": "card",
-            "title": "Thông tin hệ thống",
-            "fields": [
-                {
-                    "name": "STATUS", "label": "Trạng thái", "type": "select",
-                    "lov": { "code": "LOV_DEMO_PATIENTS_STATUS_1" },
-                    "options": [
-                        { "value": "ACTIVE", "label": "Hoạt động" },
-                        { "value": "UNACTIVE", "label": "Ngừng hoạt động" }
-                    ],
-                    "layout": { "col": 1, "colSpan": 4, "row": 1 }
-                },
-                {
-                    "name": "CREATED_BY", "label": "Người tạo", "type": "text", "readOnly": true,
-                    "layout": { "col": 5, "colSpan": 4, "row": 1 }
-                },
-                {
-                    "name": "CREATED_DATE", "label": "Ngày tạo", "type": "datetime", "readOnly": true,
-                    "layout": { "col": 9, "colSpan": 4, "row": 1 }
-                }
-            ]
-        }
+  "metadataVersion": 2,
+  "pageCode": "HD_PATIENT_DETAIL",
+  "pageType": "form",
+  "title": "Thông tin chi tiết Bệnh nhân",
+  "description": "Form thông tin chi tiết bệnh nhân",
+  "dataSource": {
+    "type": "query",
+    "keyField": "PATIENT_ID",
+    "tableName": "DEMO_PATIENTS",
+    "loadQuery": "SELECT PATIENT_ID, PATIENT_CODE, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, IDENTITY_NUMBER, BLOOD_TYPE, ALLERGIES, INSURANCE_NUMBER, INSURANCE_PROVIDER, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_PATIENTS WHERE PATIENT_ID = :id AND NVL(IS_DELETED, 0) = 0",
+    "params": [
+      {
+        "name": "id",
+        "sourceType": "url",
+        "sourceField": "id"
+      }
     ],
-    "pageEvents": [
-        {
-            "name": "delete_patient_event",
-            "trigger": "onCustomAction",
-            "sourceComponent": "delete_patient",
-            "actions": [
-                {
-                    "type": "confirm",
-                    "message": "Bạn có chắc chắn muốn xóa bệnh nhân này không?"
-                },
-                {
-                    "type": "command",
-                    "commandMode": "plsql",
-                    "query": "BEGIN UPDATE DEMO_PATIENTS SET IS_DELETED = 1 WHERE PATIENT_ID = :p_patient_id; END;",
-                    "body": {
-                        "bindVariables": [
-                            {
-                                "name": "p_patient_id",
-                                "value": "{{PATIENT_ID}}"
-                            }
-                        ]
-                    },
-                    "onResult": [
-                        {
-                            "type": "showMessage",
-                            "messageType": "success",
-                            "message": "Đã xóa bệnh nhân thành công!"
-                        },
-                        {
-                            "type": "navigate",
-                            "url": "/page/HD_PATIENTS_LIST"
-                        }
-                    ],
-                    "onError": [
-                        {
-                            "type": "showMessage",
-                            "messageType": "error",
-                            "message": "Có lỗi xảy ra khi xóa bệnh nhân."
-                        }
-                    ]
-                }
+    "saveQuery": "DECLARE\n  v_dob DATE;\n  v_str VARCHAR2(100) := TRIM(:p_date_of_birth);\n  v_gender VARCHAR2(20) := :p_gender;\nBEGIN\n  IF v_str IS NOT NULL THEN\n    IF REGEXP_LIKE(v_str, '^\\d{4}[-/]\\d{2}[-/]\\d{2}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 5, 1) = '/' THEN 'YYYY/MM/DD' ELSE 'YYYY-MM-DD' END);\n    ELSIF REGEXP_LIKE(v_str, '^\\d{2}[-/]\\d{2}[-/]\\d{4}') THEN\n      v_dob := TO_DATE(SUBSTR(v_str, 1, 10), CASE WHEN SUBSTR(v_str, 3, 1) = '/' THEN 'DD/MM/YYYY' ELSE 'DD-MM-YYYY' END);\n    ELSE\n      BEGIN\n        v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'YYYY-MM-DD');\n      EXCEPTION WHEN OTHERS THEN\n        BEGIN\n          v_dob := TO_DATE(SUBSTR(v_str, 1, 10), 'DD/MM/YYYY');\n        EXCEPTION WHEN OTHERS THEN\n          v_dob := NULL;\n        END;\n      END;\n    END IF;\n  END IF;\n\n  IF v_gender IN ('MALE', 'Nam', 'M') THEN v_gender := 'M';\n  ELSIF v_gender IN ('FEMALE', 'Nữ', 'F') THEN v_gender := 'F';\n  ELSIF v_gender IS NOT NULL THEN v_gender := 'O';\n  END IF;\n\n  UPDATE DEMO_PATIENTS\n     SET PATIENT_CODE       = :p_patient_code,\n         FIRST_NAME         = :p_first_name,\n         LAST_NAME          = :p_last_name,\n         DATE_OF_BIRTH      = NVL(v_dob, DATE_OF_BIRTH),\n         GENDER             = v_gender,\n         PHONE_NUMBER       = :p_phone_number,\n         EMAIL              = :p_email,\n         ADDRESS            = :p_address,\n         IDENTITY_NUMBER    = :p_identity_number,\n         BLOOD_TYPE         = :p_blood_type,\n         ALLERGIES          = :p_allergies,\n         INSURANCE_NUMBER   = :p_insurance_number,\n         INSURANCE_PROVIDER = :p_insurance_provider,\n         STATUS             = NVL(:p_status, STATUS)\n   WHERE PATIENT_ID = COALESCE(:p_patient_id, :id);\nEND;"
+  },
+  "layout": {
+    "type": "splitter",
+    "panes": [
+      {
+        "id": "main_pane",
+        "regionIds": [
+          "toolbar_reg",
+          "tabs:form_tabs"
+        ],
+        "width": "auto"
+      }
+    ],
+    "tabGroups": [
+      {
+        "id": "form_tabs",
+        "tabs": [
+          {
+            "id": "tab_general",
+            "label": "Thông tin chung",
+            "regionIds": [
+              "personal_info_region",
+              "contact_info_region"
             ]
-        }
+          },
+          {
+            "id": "tab_medical",
+            "label": "Thông tin y tế & Bảo hiểm",
+            "regionIds": [
+              "medical_info_region"
+            ]
+          },
+          {
+            "id": "tab_system",
+            "label": "Thông tin hệ thống",
+            "regionIds": [
+              "system_info_region"
+            ]
+          }
+        ]
+      }
     ]
+  },
+  "regions": [
+    {
+      "id": "toolbar_reg",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "main_toolbar",
+          "type": "dx-toolbar",
+          "breadcrumb": true,
+          "items": [
+            {
+              "name": "btn_soft_delete",
+              "label": "Xóa bệnh nhân",
+              "icon": "trash",
+              "type": "custom",
+              "action": "delete_patient",
+              "stylingMode": "outlined",
+              "variant": "danger",
+              "location": "after"
+            },
+            {
+              "name": "btn_save",
+              "label": "Lưu thông tin",
+              "icon": "save",
+              "type": "submit",
+              "action": "save",
+              "stylingMode": "contained",
+              "variant": "primary",
+              "location": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "personal_info_region",
+      "type": "card",
+      "title": "Thông tin định danh",
+      "fields": [
+        {
+          "name": "PATIENT_ID",
+          "label": "ID Bệnh nhân",
+          "type": "text",
+          "readOnly": true,
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "PATIENT_CODE",
+          "label": "Mã bệnh nhân",
+          "type": "text",
+          "required": true,
+          "readOnly": true,
+          "layout": {
+            "col": 4,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "FIRST_NAME",
+          "label": "Họ và tên đệm",
+          "type": "text",
+          "required": true,
+          "readOnly": true,
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "LAST_NAME",
+          "label": "Tên",
+          "type": "text",
+          "required": true,
+          "readOnly": true,
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "DATE_OF_BIRTH",
+          "label": "Ngày sinh",
+          "type": "date",
+          "format": "dd/MM/yyyy",
+          "required": true,
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 2
+          }
+        },
+        {
+          "name": "GENDER",
+          "label": "Giới tính",
+          "type": "select",
+          "lov": {
+            "code": "LOV_SEX"
+          },
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 2
+          }
+        },
+        {
+          "name": "IDENTITY_NUMBER",
+          "label": "Số CMND / CCCD",
+          "type": "text",
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact_info_region",
+      "type": "card",
+      "title": "Thông tin liên hệ",
+      "fields": [
+        {
+          "name": "PHONE_NUMBER",
+          "label": "Số điện thoại",
+          "type": "phone",
+          "required": true,
+          "readOnly": true,
+          "layout": {
+            "col": 1,
+            "colSpan": 6,
+            "row": 1
+          }
+        },
+        {
+          "name": "EMAIL",
+          "label": "Email",
+          "type": "email",
+          "layout": {
+            "col": 7,
+            "colSpan": 6,
+            "row": 1
+          }
+        },
+        {
+          "name": "ADDRESS",
+          "label": "Địa chỉ",
+          "type": "textarea",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "medical_info_region",
+      "type": "card",
+      "title": "Thông tin y tế & bảo hiểm",
+      "fields": [
+        {
+          "name": "BLOOD_TYPE",
+          "label": "Nhóm máu",
+          "type": "text",
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "INSURANCE_NUMBER",
+          "label": "Số thẻ BHYT",
+          "type": "text",
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "INSURANCE_PROVIDER",
+          "label": "Đơn vị cung cấp BHYT",
+          "type": "text",
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "ALLERGIES",
+          "label": "Thông tin dị ứng",
+          "type": "textarea",
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "system_info_region",
+      "type": "card",
+      "title": "Thông tin hệ thống",
+      "fields": [
+        {
+          "name": "STATUS",
+          "label": "Trạng thái",
+          "type": "select",
+          "lov": {
+            "code": "LOV_DEMO_PATIENTS_STATUS_1"
+          },
+          "options": [
+            {
+              "value": "ACTIVE",
+              "label": "Hoạt động"
+            },
+            {
+              "value": "UNACTIVE",
+              "label": "Ngừng hoạt động"
+            }
+          ],
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "CREATED_BY",
+          "label": "Người tạo",
+          "type": "text",
+          "readOnly": true,
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "CREATED_DATE",
+          "label": "Ngày tạo",
+          "type": "datetime",
+          "readOnly": true,
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 1
+          }
+        }
+      ]
+    }
+  ],
+  "pageEvents": [
+    {
+      "name": "delete_patient_event",
+      "trigger": "onCustomAction",
+      "sourceComponent": "delete_patient",
+      "actions": [
+        {
+          "type": "confirm",
+          "message": "Bạn có chắc chắn muốn xóa bệnh nhân này không?"
+        },
+        {
+          "type": "command",
+          "commandMode": "plsql",
+          "query": "BEGIN UPDATE DEMO_PATIENTS SET IS_DELETED = 1 WHERE PATIENT_ID = :p_patient_id; END;",
+          "body": {
+            "bindVariables": [
+              {
+                "name": "p_patient_id",
+                "value": "{{PATIENT_ID}}"
+              }
+            ]
+          },
+          "onResult": [
+            {
+              "type": "showMessage",
+              "messageType": "success",
+              "message": "Đã xóa bệnh nhân thành công!"
+            },
+            {
+              "type": "navigate",
+              "url": "/page/HD_PATIENTS_LIST"
+            }
+          ],
+          "onError": [
+            {
+              "type": "showMessage",
+              "messageType": "error",
+              "message": "Có lỗi xảy ra khi xóa bệnh nhân."
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

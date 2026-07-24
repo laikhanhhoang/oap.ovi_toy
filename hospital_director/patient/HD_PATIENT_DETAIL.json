@@ -90,6 +90,7 @@
       "id": "personal_info_region",
       "type": "card",
       "title": "Thông tin định danh",
+      "_comment": "Gồm các trường PATIENT_ID (ẩn), PATIENT_CODE (chỉ đọc), FIRST_NAME (bắt buộc), LAST_NAME (bắt buộc), DATE_OF_BIRTH, GENDER, IDENTITY_NUMBER",
       "fields": [
         {
           "name": "PATIENT_ID",
@@ -97,17 +98,17 @@
         },
         {
           "name": "PATIENT_CODE",
-          "label": "Mã bệnh nhân", "type": "text",  "required": true,"readOnly": true,
+          "label": "Mã bệnh nhân", "type": "text",  "required": true, "readOnly": true,
           "layout": {"col": 1,"colSpan": 4,"row": 1}
         },
         {
           "name": "FIRST_NAME",
-          "label": "Họ và tên đệm", "type": "text", "required": true, "readOnly": true,
+          "label": "Họ và tên đệm", "type": "text", "required": true,
           "layout": {"col": 5,"colSpan": 4,"row": 1}
         },
         {
           "name": "LAST_NAME",
-          "label": "Tên",  "type": "text", "required": true,  "readOnly": true,
+          "label": "Tên",  "type": "text", "required": true,
           "layout": {"col": 9,"colSpan": 4,"row": 1}
         },
         {
@@ -118,8 +119,7 @@
         {
           "name": "GENDER",
           "label": "Giới tính", "type": "select",
-          "lov": {"code": "LOV_SEX"},
-          "layout": {"col": 5,"colSpan": 4,"row": 2}
+          "lov": {"code": "LOV_SEX"}, "layout": {"col": 5,"colSpan": 4,"row": 2}
         },
         {
           "name": "IDENTITY_NUMBER",

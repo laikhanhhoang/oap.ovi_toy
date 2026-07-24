@@ -1,0 +1,368 @@
+{
+    "metadataVersion": 2,
+    "pageCode": "HD_TREATMENTS_LIST",
+    "pageType": "form",
+    "title": "Danh sách Đợt Điều trị",
+    "description": "Trang danh sách các đợt điều trị với bộ lọc bên trái và datagrid bên phải",
+    "dataSource": {
+        "type": "none"
+    },
+    "layout": {
+        "type": "splitter",
+        "orientation": "horizontal",
+        "panes": [
+            {
+                "id": "filters_pane",
+                "regionIds": [
+                    "filter_region"
+                ],
+                "size": "280px",
+                "collapsible": true
+            },
+            {
+                "id": "list_center",
+                "regionIds": [
+                    "toolbar_reg",
+                    "list_region"
+                ],
+                "size": "1fr"
+            }
+        ]
+    },
+    "regions": [
+        {
+            "id": "filter_region",
+            "type": "card",
+            "title": "Bộ lọc tìm kiếm",
+            "fields": [
+                {
+                    "name": "f_treatment_code",
+                    "type": "text",
+                    "label": "Mã điều trị",
+                    "placeholder": "Nhập mã điều trị...",
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 1
+                    }
+                },
+                {
+                    "name": "f_patient_id",
+                    "type": "select",
+                    "label": "Bệnh nhân",
+                    "placeholder": "Tất cả bệnh nhân",
+                    "showClearButton": true,
+                    "lov": {
+                        "code": "LOV_DEMO_PATIENTS"
+                    },
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 2
+                    }
+                },
+                {
+                    "name": "f_doctor_id",
+                    "type": "select",
+                    "label": "Bác sĩ điều trị",
+                    "placeholder": "Tất cả bác sĩ",
+                    "showClearButton": true,
+                    "lov": {
+                        "code": "LOV_DEMO_DOCTORS"
+                    },
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 3
+                    }
+                },
+                {
+                    "name": "f_treatment_type",
+                    "type": "select",
+                    "label": "Loại điều trị",
+                    "placeholder": "Tất cả loại",
+                    "showClearButton": true,
+                    "options": [
+                        { "value": "INPATIENT_CARE", "label": "Điều trị nội trú" },
+                        { "value": "OUTPATIENT_CARE", "label": "Điều trị ngoại trú" },
+                        { "value": "EMERGENCY", "label": "Cấp cứu" },
+                        { "value": "SURGERY", "label": "Phẫu thuật" },
+                        { "value": "THERAPY", "label": "Trị liệu" }
+                    ],
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 4
+                    }
+                },
+                {
+                    "name": "f_status",
+                    "type": "select",
+                    "label": "Trạng thái",
+                    "placeholder": "Tất cả trạng thái",
+                    "showClearButton": true,
+                    "options": [
+                        { "value": "PLANNED", "label": "Đã lên lịch" },
+                        { "value": "IN_PROGRESS", "label": "Đang điều trị" },
+                        { "value": "COMPLETED", "label": "Đã hoàn thành" },
+                        { "value": "CANCELLED", "label": "Đã hủy" }
+                    ],
+                    "layout": {
+                        "col": 1,
+                        "colSpan": 12,
+                        "row": 5
+                    }
+                }
+            ]
+        },
+        {
+            "id": "toolbar_reg",
+            "type": "plain",
+            "fields": [
+                {
+                    "name": "main_toolbar",
+                    "type": "dx-toolbar",
+                    "items": [
+                        {
+                            "name": "btn_create_treatment",
+                            "label": "Thêm điều trị mới",
+                            "icon": "plus",
+                            "stylingMode": "contained",
+                            "variant": "success",
+                            "location": "after",
+                            "modalConfig": {
+                                "pageCode": "HD_TREATMENT_FORM",
+                                "size": "xl",
+                                "title": "Thêm mới đợt điều trị",
+                                "refreshOnClose": true
+                            }
+                        },
+                        {
+                            "name": "btn_delete_selected",
+                            "label": "Xóa điều trị đã chọn",
+                            "icon": "trash",
+                            "type": "custom",
+                            "action": "delete_selected_treatments",
+                            "stylingMode": "outlined",
+                            "variant": "danger",
+                            "location": "after"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "list_region",
+            "type": "card",
+            "title": "Danh sách đợt điều trị",
+            "fields": [
+                {
+                    "name": "grid_treatments",
+                    "type": "datagrid",
+                    "layout": {
+                        "colSpan": 12
+                    },
+                    "metadata": {
+                        "pageType": "datagrid",
+                        "filterRegionId": "filter_region",
+                        "height": "calc(100vh - 180px)",
+                        "filterRow": true,
+                        "searchPanel": true,
+                        "headerFilter": true,
+                        "columnChooser": true,
+                        "exportEnabled": true,
+                        "dataSource": {
+                            "type": "query",
+                            "tableName": "DEMO_TREATMENTS",
+                            "keyField": "TREATMENT_ID",
+                            "bindVariables": [
+                                {
+                                    "name": "p_treatment_code",
+                                    "sourceField": "f_treatment_code"
+                                },
+                                {
+                                    "name": "p_patient_id",
+                                    "sourceField": "f_patient_id"
+                                },
+                                {
+                                    "name": "p_doctor_id",
+                                    "sourceField": "f_doctor_id"
+                                },
+                                {
+                                    "name": "p_treatment_type",
+                                    "sourceField": "f_treatment_type"
+                                },
+                                {
+                                    "name": "p_status",
+                                    "sourceField": "f_status"
+                                }
+                            ],
+                            "query": "SELECT t.TREATMENT_ID, t.TREATMENT_CODE, t.MEDICAL_RECORD_ID, t.PATIENT_ID, (p.FIRST_NAME || ' ' || p.LAST_NAME) AS PATIENT_NAME, t.DOCTOR_ID, (d.FIRST_NAME || ' ' || d.LAST_NAME) AS DOCTOR_NAME, t.ROOM_ID, r.ROOM_NAME, t.BED_NUMBER, t.TREATMENT_TYPE, t.DESCRIPTION, t.START_DATE, t.END_DATE, t.COST, t.STATUS FROM DEMO_TREATMENTS t LEFT JOIN DEMO_PATIENTS p ON t.PATIENT_ID = p.PATIENT_ID LEFT JOIN DEMO_DOCTORS d ON t.DOCTOR_ID = d.DOCTOR_ID LEFT JOIN DEMO_ROOMS r ON t.ROOM_ID = r.ROOM_ID WHERE (:p_treatment_code IS NULL OR LOWER(t.TREATMENT_CODE) LIKE LOWER('%'||:p_treatment_code||'%')) AND (:p_patient_id IS NULL OR t.PATIENT_ID = :p_patient_id) AND (:p_doctor_id IS NULL OR t.DOCTOR_ID = :p_doctor_id) AND (:p_treatment_type IS NULL OR t.TREATMENT_TYPE = :p_treatment_type) AND (:p_status IS NULL OR t.STATUS = :p_status) ORDER BY t.TREATMENT_ID DESC"
+                        },
+                        "tableConfig": {
+                            "height": "calc(100vh - 220px)",
+                            "pageSize": 15,
+                            "search": true,
+                            "filterPanel": true,
+                            "selection": "multiple"
+                        },
+                        "columns": [
+                            {
+                                "key": "TREATMENT_ID",
+                                "label": "Mã hệ thống điều trị",
+                                "visible": false
+                            },
+                            {
+                                "key": "TREATMENT_CODE",
+                                "label": "Mã điều trị",
+                                "type": "link",
+                                "width": 150,
+                                "allowSorting": true,
+                                "modalConfig": {
+                                    "keyField": "TREATMENT_ID",
+                                    "pageCode": "HD_TREATMENT_TABS",
+                                    "size": "xl",
+                                    "title": "Thông tin chi tiết đợt điều trị",
+                                    "refreshOnClose": true
+                                }
+                            },
+                            {
+                                "key": "PATIENT_NAME",
+                                "label": "Bệnh nhân",
+                                "type": "text",
+                                "width": 200,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "DOCTOR_NAME",
+                                "label": "Bác sĩ",
+                                "type": "text",
+                                "width": 200,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "ROOM_NAME",
+                                "label": "Phòng bệnh",
+                                "type": "text",
+                                "width": 130,
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "BED_NUMBER",
+                                "label": "Giường",
+                                "type": "text",
+                                "width": 100,
+                                "alignment": "center",
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "TREATMENT_TYPE",
+                                "label": "Loại điều trị",
+                                "type": "select",
+                                "width": 160,
+                                "allowSorting": true,
+                                "options": [
+                                    { "value": "INPATIENT_CARE", "label": "Điều trị nội trú" },
+                                    { "value": "OUTPATIENT_CARE", "label": "Điều trị ngoại trú" },
+                                    { "value": "EMERGENCY", "label": "Cấp cứu" },
+                                    { "value": "SURGERY", "label": "Phẫu thuật" },
+                                    { "value": "THERAPY", "label": "Trị liệu" }
+                                ]
+                            },
+                            {
+                                "key": "START_DATE",
+                                "label": "Ngày bắt đầu",
+                                "type": "date",
+                                "format": "dd/MM/yyyy",
+                                "width": 130,
+                                "alignment": "center",
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "END_DATE",
+                                "label": "Ngày kết thúc",
+                                "type": "date",
+                                "format": "dd/MM/yyyy",
+                                "width": 130,
+                                "alignment": "center",
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "COST",
+                                "label": "Chi phí",
+                                "type": "number",
+                                "format": "decimal",
+                                "width": 130,
+                                "alignment": "right",
+                                "allowSorting": true
+                            },
+                            {
+                                "key": "STATUS",
+                                "label": "Trạng thái",
+                                "type": "select",
+                                "width": 140,
+                                "allowSorting": true,
+                                "options": [
+                                    { "value": "PLANNED", "label": "Đã lên lịch" },
+                                    { "value": "IN_PROGRESS", "label": "Đang điều trị" },
+                                    { "value": "COMPLETED", "label": "Đã hoàn thành" },
+                                    { "value": "CANCELLED", "label": "Đã hủy" }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "pageEvents": [
+        {
+            "name": "delete_selected_treatments",
+            "trigger": "onCustomAction",
+            "sourceComponent": "delete_selected_treatments",
+            "actions": [
+                {
+                    "type": "abort",
+                    "condition": "typeof grid_treatments_SELECTED === 'undefined' || !grid_treatments_SELECTED",
+                    "message": "Vui lòng chọn ít nhất một đợt điều trị để xóa.",
+                    "preload": "{{grid_treatments_SELECTED}}"
+                },
+                {
+                    "type": "confirm",
+                    "message": "Bạn có chắc chắn muốn xóa các đợt điều trị đã chọn không?"
+                },
+                {
+                    "type": "command",
+                    "commandMode": "plsql",
+                    "query": "DECLARE v_ids VARCHAR2(4000) := :p_ids; BEGIN DELETE FROM DEMO_TREATMENTS WHERE TREATMENT_ID IN (SELECT regexp_substr(v_ids, '[^,]+', 1, level) FROM dual CONNECT BY regexp_substr(v_ids, '[^,]+', 1, level) IS NOT NULL); END;",
+                    "body": {
+                        "bindVariables": [
+                            {
+                                "name": "p_ids",
+                                "value": "{{grid_treatments_SELECTED}}"
+                            }
+                        ]
+                    },
+                    "onResult": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "success",
+                            "message": "Đã xóa các đợt điều trị đã chọn thành công!"
+                        },
+                        {
+                            "type": "refreshRegion",
+                            "target": "list_region"
+                        }
+                    ],
+                    "onError": [
+                        {
+                            "type": "showMessage",
+                            "messageType": "error",
+                            "message": "Lỗi xảy ra khi xóa đợt điều trị."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

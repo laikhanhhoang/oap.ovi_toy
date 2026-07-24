@@ -72,23 +72,15 @@
           "items": [
             {
               "name": "btn_soft_delete",
-              "label": "Xóa bệnh nhân",
-              "icon": "trash",
-              "type": "custom",
-              "action": "delete_patient",
-              "stylingMode": "outlined",
-              "variant": "danger",
-              "location": "after"
+              "label": "Xóa bệnh nhân","icon": "trash",
+              "type": "custom","action": "delete_patient","stylingMode": "outlined",
+              "variant": "danger","location": "after"
             },
             {
               "name": "btn_save",
-              "label": "Lưu thông tin",
-              "icon": "save",
-              "type": "submit",
-              "action": "save",
-              "stylingMode": "contained",
-              "variant": "primary",
-              "location": "after"
+              "label": "Lưu thông tin","icon": "save",
+              "type": "submit","action": "save","stylingMode": "contained",
+              "variant": "primary","location": "after"
             }
           ]
         }
@@ -101,85 +93,38 @@
       "fields": [
         {
           "name": "PATIENT_ID",
-          "label": "ID Bệnh nhân",
-          "type": "text",
-          "readOnly": true,
-          "layout": {
-            "col": 1,
-            "colSpan": 3,
-            "row": 1
-          }
+          "label": "ID Bệnh nhân", "type": "text",  "visible": false, "readOnly": true
         },
         {
           "name": "PATIENT_CODE",
-          "label": "Mã bệnh nhân",
-          "type": "text",
-          "required": true,
-          "readOnly": true,
-          "layout": {
-            "col": 4,
-            "colSpan": 3,
-            "row": 1
-          }
+          "label": "Mã bệnh nhân", "type": "text",  "required": true,"readOnly": true,
+          "layout": {"col": 1,"colSpan": 4,"row": 1}
         },
         {
           "name": "FIRST_NAME",
-          "label": "Họ và tên đệm",
-          "type": "text",
-          "required": true,
-          "readOnly": true,
-          "layout": {
-            "col": 7,
-            "colSpan": 3,
-            "row": 1
-          }
+          "label": "Họ và tên đệm", "type": "text", "required": true, "readOnly": true,
+          "layout": {"col": 5,"colSpan": 4,"row": 1}
         },
         {
           "name": "LAST_NAME",
-          "label": "Tên",
-          "type": "text",
-          "required": true,
-          "readOnly": true,
-          "layout": {
-            "col": 10,
-            "colSpan": 3,
-            "row": 1
-          }
+          "label": "Tên",  "type": "text", "required": true,  "readOnly": true,
+          "layout": {"col": 9,"colSpan": 4,"row": 1}
         },
         {
           "name": "DATE_OF_BIRTH",
-          "label": "Ngày sinh",
-          "type": "date",
-          "format": "dd/MM/yyyy",
-          "required": true,
-          "layout": {
-            "col": 1,
-            "colSpan": 4,
-            "row": 2
-          }
+          "label": "Ngày sinh", "type": "date", "format": "dd/MM/yyyy", "required": true,
+          "layout": {"col": 1,"colSpan": 4,"row": 2}
         },
         {
           "name": "GENDER",
-          "label": "Giới tính",
-          "type": "select",
-          "lov": {
-            "code": "LOV_SEX"
-          },
-          "layout": {
-            "col": 5,
-            "colSpan": 4,
-            "row": 2
-          }
+          "label": "Giới tính", "type": "select",
+          "lov": {"code": "LOV_SEX"},
+          "layout": {"col": 5,"colSpan": 4,"row": 2}
         },
         {
           "name": "IDENTITY_NUMBER",
-          "label": "Số CMND / CCCD",
-          "type": "text",
-          "layout": {
-            "col": 9,
-            "colSpan": 4,
-            "row": 2
-          }
+          "label": "Số CMND / CCCD", "type": "text",
+          "layout": {"col": 9,"colSpan": 4,"row": 2}
         }
       ]
     },
@@ -190,35 +135,18 @@
       "fields": [
         {
           "name": "PHONE_NUMBER",
-          "label": "Số điện thoại",
-          "type": "phone",
-          "required": true,
-          "readOnly": true,
-          "layout": {
-            "col": 1,
-            "colSpan": 6,
-            "row": 1
-          }
+          "label": "Số điện thoại", "type": "phone", "required": true, "readOnly": true,
+          "layout": {"col": 1,"colSpan": 6,"row": 1}
         },
         {
           "name": "EMAIL",
-          "label": "Email",
-          "type": "email",
-          "layout": {
-            "col": 7,
-            "colSpan": 6,
-            "row": 1
-          }
+          "label": "Email", "type": "email",
+          "layout": {"col": 7,"colSpan": 6,"row": 1}
         },
         {
           "name": "ADDRESS",
-          "label": "Địa chỉ",
-          "type": "textarea",
-          "layout": {
-            "col": 1,
-            "colSpan": 12,
-            "row": 2
-          }
+          "label": "Địa chỉ", "type": "textarea",
+          "layout": {"col": 1,"colSpan": 12,"row": 2}
         }
       ]
     },
@@ -227,45 +155,24 @@
       "type": "card",
       "title": "Thông tin y tế & bảo hiểm",
       "fields": [
-        {
-          "name": "BLOOD_TYPE",
-          "label": "Nhóm máu",
-          "type": "text",
-          "layout": {
-            "col": 1,
-            "colSpan": 4,
-            "row": 1
-          }
+        {"name": "BLOOD_TYPE",
+        "label": "Nhóm máu", "type": "text",            
+          "layout": {"col": 1,"colSpan": 4,"row": 1}
         },
         {
           "name": "INSURANCE_NUMBER",
-          "label": "Số thẻ BHYT",
-          "type": "text",
-          "layout": {
-            "col": 5,
-            "colSpan": 4,
-            "row": 1
-          }
+          "label": "Số thẻ BHYT", "type": "text",
+          "layout": {"col": 5,"colSpan": 4,"row": 1}
         },
         {
           "name": "INSURANCE_PROVIDER",
-          "label": "Đơn vị cung cấp BHYT",
-          "type": "text",
-          "layout": {
-            "col": 9,
-            "colSpan": 4,
-            "row": 1
-          }
+          "label": "Đơn vị cung cấp BHYT", "type": "text",
+          "layout": {"col": 9,"colSpan": 4,"row": 1}
         },
         {
           "name": "ALLERGIES",
-          "label": "Thông tin dị ứng",
-          "type": "textarea",
-          "layout": {
-            "col": 1,
-            "colSpan": 12,
-            "row": 2
-          }
+          "label": "Thông tin dị ứng", "type": "textarea",
+          "layout": {"col": 1,"colSpan": 12,"row": 2}
         }
       ]
     },
@@ -275,49 +182,24 @@
       "title": "Thông tin hệ thống",
       "fields": [
         {
-          "name": "STATUS",
-          "label": "Trạng thái",
-          "type": "select",
-          "lov": {
-            "code": "LOV_DEMO_PATIENTS_STATUS_1"
-          },
+          "name": "STATUS",             
+          "label": "Trạng thái", "type": "select",
+          "lov": {"code": "LOV_DEMO_PATIENTS_STATUS_1"},
           "options": [
-            {
-              "value": "ACTIVE",
-              "label": "Hoạt động"
-            },
-            {
-              "value": "UNACTIVE",
-              "label": "Ngừng hoạt động"
-            }
+            {"value": "ACTIVE", "label": "Hoạt động"},
+            {"value": "UNACTIVE", "label": "Ngừng hoạt động"}
           ],
-          "layout": {
-            "col": 1,
-            "colSpan": 4,
-            "row": 1
-          }
+          "layout": {"col": 1,"colSpan": 4,"row": 1}
         },
         {
-          "name": "CREATED_BY",
-          "label": "Người tạo",
-          "type": "text",
-          "readOnly": true,
-          "layout": {
-            "col": 5,
-            "colSpan": 4,
-            "row": 1
-          }
+          "name": "CREATED_BY",         
+          "label": "Người tạo","type": "text", "readOnly": true,
+          "layout": {"col": 5,"colSpan": 4,"row": 1}
         },
         {
-          "name": "CREATED_DATE",
-          "label": "Ngày tạo",
-          "type": "datetime",
-          "readOnly": true,
-          "layout": {
-            "col": 9,
-            "colSpan": 4,
-            "row": 1
-          }
+          "name": "CREATED_DATE",       
+          "label": "Ngày tạo","type": "datetime","readOnly": true,
+          "layout": {"col": 9,"colSpan": 4,"row": 1}
         }
       ]
     }

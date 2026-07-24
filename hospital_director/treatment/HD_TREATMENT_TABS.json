@@ -1,0 +1,395 @@
+{
+  "metadataVersion": 2,
+  "pageCode": "HD_TREATMENT_TABS",
+  "pageType": "form",
+  "title": "Thông tin chi tiết Đợt Điều trị",
+  "description": "Form thông tin chi tiết đợt điều trị",
+  "dataSource": {
+    "type": "query",
+    "keyField": "TREATMENT_ID",
+    "tableName": "DEMO_TREATMENTS",
+    "loadQuery": "SELECT TREATMENT_ID, TREATMENT_CODE, MEDICAL_RECORD_ID, PATIENT_ID, DOCTOR_ID, ROOM_ID, BED_NUMBER, TREATMENT_TYPE, DESCRIPTION, START_DATE, END_DATE, COST, STATUS, CREATED_BY, CREATED_DATE FROM DEMO_TREATMENTS WHERE TREATMENT_ID = :id",
+    "params": [
+      {
+        "name": "id",
+        "sourceType": "url",
+        "sourceField": "id"
+      }
+    ],
+    "saveQuery": "DECLARE\n  v_start_date DATE;\n  v_end_date DATE;\n  v_start_str VARCHAR2(100) := TRIM(:p_start_date);\n  v_end_str VARCHAR2(100) := TRIM(:p_end_date);\nBEGIN\n  -- Parse START_DATE\n  IF v_start_str IS NOT NULL THEN\n    IF REGEXP_LIKE(v_start_str, '^\\d{4}[-/]\\d{2}[-/]\\d{2}') THEN\n      v_start_date := TO_DATE(SUBSTR(v_start_str, 1, 10), CASE WHEN SUBSTR(v_start_str, 5, 1) = '/' THEN 'YYYY/MM/DD' ELSE 'YYYY-MM-DD' END);\n    ELSIF REGEXP_LIKE(v_start_str, '^\\d{2}[-/]\\d{2}[-/]\\d{4}') THEN\n      v_start_date := TO_DATE(SUBSTR(v_start_str, 1, 10), CASE WHEN SUBSTR(v_start_str, 3, 1) = '/' THEN 'DD/MM/YYYY' ELSE 'DD-MM-YYYY' END);\n    ELSE\n      BEGIN\n        v_start_date := TO_DATE(SUBSTR(v_start_str, 1, 10), 'YYYY-MM-DD');\n      EXCEPTION WHEN OTHERS THEN\n        BEGIN\n          v_start_date := TO_DATE(SUBSTR(v_start_str, 1, 10), 'DD/MM/YYYY');\n        EXCEPTION WHEN OTHERS THEN\n          v_start_date := NULL;\n        END;\n      END;\n    END IF;\n  END IF;\n  v_start_date := NVL(v_start_date, TRUNC(SYSDATE));\n\n  -- Parse END_DATE\n  IF v_end_str IS NOT NULL THEN\n    IF REGEXP_LIKE(v_end_str, '^\\d{4}[-/]\\d{2}[-/]\\d{2}') THEN\n      v_end_date := TO_DATE(SUBSTR(v_end_str, 1, 10), CASE WHEN SUBSTR(v_end_str, 5, 1) = '/' THEN 'YYYY/MM/DD' ELSE 'YYYY-MM-DD' END);\n    ELSIF REGEXP_LIKE(v_end_str, '^\\d{2}[-/]\\d{2}[-/]\\d{4}') THEN\n      v_end_date := TO_DATE(SUBSTR(v_end_str, 1, 10), CASE WHEN SUBSTR(v_end_str, 3, 1) = '/' THEN 'DD/MM/YYYY' ELSE 'DD-MM-YYYY' END);\n    ELSE\n      BEGIN\n        v_end_date := TO_DATE(SUBSTR(v_end_str, 1, 10), 'YYYY-MM-DD');\n      EXCEPTION WHEN OTHERS THEN\n        BEGIN\n          v_end_date := TO_DATE(SUBSTR(v_end_str, 1, 10), 'DD/MM/YYYY');\n        EXCEPTION WHEN OTHERS THEN\n          v_end_date := NULL;\n        END;\n      END;\n    END IF;\n  END IF;\n\n  UPDATE DEMO_TREATMENTS\n     SET MEDICAL_RECORD_ID = :p_medical_record_id,\n         PATIENT_ID        = :p_patient_id,\n         DOCTOR_ID         = :p_doctor_id,\n         ROOM_ID           = :p_room_id,\n         BED_NUMBER        = :p_bed_number,\n         TREATMENT_TYPE    = :p_treatment_type,\n         DESCRIPTION       = :p_description,\n         START_DATE        = v_start_date,\n         END_DATE          = v_end_date,\n         COST              = NVL(:p_cost, 0),\n         STATUS            = NVL(:p_status, STATUS)\n   WHERE TREATMENT_ID = COALESCE(:p_treatment_id, :id);\nEND;"
+  },
+  "layout": {
+    "type": "splitter",
+    "panes": [
+      {
+        "id": "main_pane",
+        "regionIds": [
+          "toolbar_reg",
+          "tabs:form_tabs"
+        ],
+        "width": "auto"
+      }
+    ],
+    "tabGroups": [
+      {
+        "id": "form_tabs",
+        "tabs": [
+          {
+            "id": "tab_general",
+            "label": "Thông tin chung",
+            "regionIds": [
+              "personal_info_region",
+              "vertical_spacer_reg",
+              "entities_info_region"
+            ]
+          },
+          {
+            "id": "tab_placement",
+            "label": "Địa điểm & Thời gian",
+            "regionIds": [
+              "location_info_region",
+              "vertical_spacer_reg_2",
+              "description_region"
+            ]
+          },
+          {
+            "id": "tab_system",
+            "label": "Thông tin hệ thống",
+            "regionIds": [
+              "system_info_region"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "toolbar_reg",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "main_toolbar",
+          "type": "dx-toolbar",
+          "breadcrumb": true,
+          "items": [
+            {
+              "name": "btn_delete",
+              "label": "Xóa điều trị",
+              "icon": "trash",
+              "type": "custom",
+              "action": "delete_treatment",
+              "stylingMode": "outlined",
+              "variant": "danger",
+              "location": "after"
+            },
+            {
+              "name": "btn_save",
+              "label": "Lưu thông tin",
+              "icon": "save",
+              "type": "submit",
+              "action": "save",
+              "stylingMode": "contained",
+              "variant": "primary",
+              "location": "after"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "personal_info_region",
+      "type": "card",
+      "title": "Thông tin chung đợt điều trị",
+      "fields": [
+        {
+          "name": "TREATMENT_ID",
+          "label": "ID Đợt điều trị",
+          "type": "text",
+          "readOnly": true,
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "TREATMENT_CODE",
+          "label": "Mã điều trị",
+          "type": "text",
+          "required": true,
+          "readOnly": true,
+          "layout": {
+            "col": 4,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "TREATMENT_TYPE",
+          "label": "Loại điều trị",
+          "type": "select",
+          "required": true,
+          "options": [
+            { "value": "INPATIENT_CARE", "label": "Điều trị nội trú" },
+            { "value": "OUTPATIENT_CARE", "label": "Điều trị ngoại trú" },
+            { "value": "EMERGENCY", "label": "Cấp cứu" },
+            { "value": "SURGERY", "label": "Phẫu thuật" },
+            { "value": "THERAPY", "label": "Trị liệu" }
+          ],
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "COST",
+          "label": "Chi phí điều trị (VNĐ)",
+          "type": "number",
+          "format": "decimal",
+          "required": true,
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vertical_spacer_reg",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "v_spacer",
+          "type": "spacer",
+          "height": "20px",
+          "layout": {
+            "colSpan": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "entities_info_region",
+      "type": "card",
+      "title": "Đối tượng liên quan",
+      "fields": [
+        {
+          "name": "PATIENT_ID",
+          "label": "Bệnh nhân",
+          "type": "select",
+          "required": true,
+          "lov": {
+            "code": "LOV_DEMO_PATIENTS"
+          },
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "DOCTOR_ID",
+          "label": "Bác sĩ điều trị",
+          "type": "select",
+          "required": true,
+          "lov": {
+            "code": "LOV_DEMO_DOCTORS"
+          },
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "MEDICAL_RECORD_ID",
+          "label": "Mã hồ sơ bệnh án",
+          "type": "text",
+          "required": true,
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "location_info_region",
+      "type": "card",
+      "title": "Địa điểm & Thời gian",
+      "fields": [
+        {
+          "name": "ROOM_ID",
+          "label": "Phòng bệnh",
+          "type": "select",
+          "lov": {
+            "code": "LOV_DEMO_ROOMS"
+          },
+          "layout": {
+            "col": 1,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "BED_NUMBER",
+          "label": "Số giường",
+          "type": "text",
+          "layout": {
+            "col": 4,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "START_DATE",
+          "label": "Ngày bắt đầu",
+          "type": "date",
+          "format": "dd/MM/yyyy",
+          "required": true,
+          "layout": {
+            "col": 7,
+            "colSpan": 3,
+            "row": 1
+          }
+        },
+        {
+          "name": "END_DATE",
+          "label": "Ngày kết thúc",
+          "type": "date",
+          "format": "dd/MM/yyyy",
+          "layout": {
+            "col": 10,
+            "colSpan": 3,
+            "row": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vertical_spacer_reg_2",
+      "type": "plain",
+      "fields": [
+        {
+          "name": "v_spacer_2",
+          "type": "spacer",
+          "height": "20px",
+          "layout": {
+            "colSpan": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "description_region",
+      "type": "card",
+      "title": "Mô tả nội dung điều trị",
+      "fields": [
+        {
+          "name": "DESCRIPTION",
+          "label": "Mô tả chi tiết",
+          "type": "textarea",
+          "required": true,
+          "layout": {
+            "col": 1,
+            "colSpan": 12,
+            "row": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "system_info_region",
+      "type": "card",
+      "title": "Thông tin hệ thống",
+      "fields": [
+        {
+          "name": "STATUS",
+          "label": "Trạng thái",
+          "type": "select",
+          "options": [
+            { "value": "PLANNED", "label": "Đã lên lịch" },
+            { "value": "IN_PROGRESS", "label": "Đang điều trị" },
+            { "value": "COMPLETED", "label": "Đã hoàn thành" },
+            { "value": "CANCELLED", "label": "Đã hủy" }
+          ],
+          "layout": {
+            "col": 1,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "CREATED_BY",
+          "label": "Người tạo",
+          "type": "text",
+          "readOnly": true,
+          "layout": {
+            "col": 5,
+            "colSpan": 4,
+            "row": 1
+          }
+        },
+        {
+          "name": "CREATED_DATE",
+          "label": "Ngày tạo",
+          "type": "datetime",
+          "readOnly": true,
+          "layout": {
+            "col": 9,
+            "colSpan": 4,
+            "row": 1
+          }
+        }
+      ]
+    }
+  ],
+  "pageEvents": [
+    {
+      "name": "delete_treatment_event",
+      "trigger": "onCustomAction",
+      "sourceComponent": "delete_treatment",
+      "actions": [
+        {
+          "type": "confirm",
+          "message": "Bạn có chắc chắn muốn xóa đợt điều trị này không?"
+        },
+        {
+          "type": "command",
+          "commandMode": "plsql",
+          "query": "BEGIN DELETE FROM DEMO_TREATMENTS WHERE TREATMENT_ID = :p_treatment_id; END;",
+          "body": {
+            "bindVariables": [
+              {
+                "name": "p_treatment_id",
+                "value": "{{TREATMENT_ID}}"
+              }
+            ]
+          },
+          "onResult": [
+            {
+              "type": "showMessage",
+              "messageType": "success",
+              "message": "Đã xóa đợt điều trị thành công!"
+            },
+            {
+              "type": "navigate",
+              "url": "/page/HD_TREATMENTS_LIST"
+            }
+          ],
+          "onError": [
+            {
+              "type": "showMessage",
+              "messageType": "error",
+              "message": "Có lỗi xảy ra khi xóa đợt điều trị."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

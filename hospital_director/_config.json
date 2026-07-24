@@ -2,8 +2,14 @@
     "workspace": "TASECOLAND",
     "appCode": "hospital_director",
     "pageCode_local_server": [
+        ["PATIENT"],
         ["patient/HD_PATIENTS_LIST",    "HD_PATIENTS_LIST"],
         ["patient/HD_PATIENT_FORM",     "HD_PATIENT_FORM"],
-        ["patient/HD_PATIENT_DETAIL",   "HD_PATIENT_DETAIL"]
+        ["patient/HD_PATIENT_DETAIL",   "HD_PATIENT_DETAIL"],
+        
+        ["TREATMENT"],
+        ["treatment/HD_TREATMENTS_LIST", "HD_TREATMENTS_LIST"],
+        ["treatment/HD_TREATMENT_FORM", "HD_TREATMENT_FORM"],
+        ["treatment/HD_TREATMENT_TABS", "HD_TREATMENT_TABS"]
     ]
 }
